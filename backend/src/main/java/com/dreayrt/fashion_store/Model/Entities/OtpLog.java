@@ -8,8 +8,9 @@ import java.util.Date;
 @Table(name = "OtpLog")
 public class OtpLog {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OtpId")
-    private String otpid;
+    private Integer otpid;
     @Column(name = "Email")
     private String email;
     @Column(name = "OtpHash")
@@ -19,16 +20,17 @@ public class OtpLog {
     @Column(name = "ExpiredAt")
     private Date expiratedat;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserName",nullable = false)
     private TaiKhoan taiKhoan;
 
 
-    public String getOtpid() {
+    public Integer getOtpid() {
         return otpid;
     }
 
-    public void setOtpid(String otpid) {
+    public void setOtpid(Integer otpid) {
         this.otpid = otpid;
     }
 

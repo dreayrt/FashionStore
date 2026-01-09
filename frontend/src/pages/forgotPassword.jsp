@@ -146,7 +146,30 @@
       <form:form action="/pages/forgotPassword" modelAttribute="ForgotPasswordRequest" method="post" class="mt-3">
         <div class="mb-3">
           <label class="form-label" for="email">Email đã đăng ký</label>
-          <form:input
+          <form:errors path="email" cssClass="text-danger"/>
+          <c:if test="${forgotPasswordError !=null}" >
+              <div class="alert alert-danger">
+                      ${forgotPasswordError}
+              </div>
+          </c:if>
+
+            <c:if test="${SuccessMessage != null}">
+                <div id="successAlert" class="alert alert-success">
+                        ${SuccessMessage}
+                </div>
+                <script>
+                    // Mờ dần sau 0.7s
+                    setTimeout(function () {
+                        document.getElementById("successAlert").classList.add("fade");
+                    }, 700);
+                    // Redirect sau 1.5s
+                    setTimeout(function () {
+                        window.location.href = "<c:url value='/pages/OtpForgot'/>";
+                    }, 1500);
+                </script>
+            </c:if>
+
+            <form:input
             type="email"
             class="form-control"
             id="email"

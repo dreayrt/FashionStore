@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
-import java.net.http.HttpResponse;
-
-
 @Controller
 public class LoginController {
     @Autowired
@@ -38,9 +35,10 @@ public class LoginController {
             for (Cookie c : request.getCookies()) {
                 if ("REMEMBER_LOGIN".equals(c.getName())) {
                     String username = c.getValue().trim();
-                    TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username);
-                    if (taiKhoan != null) {
-                        session.setAttribute("user", taiKhoan);
+                    taiKhoanRepository.findByUsername(username)
+                            .filter(t -> t.getUsername() != null && t.getUsername().trim().equals(username))
+                            .ifPresent(t -> session.setAttribute("user", t));
+                    if (session.getAttribute("user") != null) {
                         return "redirect:/";
                     }
                 }
