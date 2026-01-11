@@ -1,9 +1,7 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -43,6 +41,18 @@ public class SanPham {
     private String anhChiTiet1;
     @Column(name="AnhChiTiet2")
     private String anhChiTiet2;
+
+    // Link tới bảng Kho; property name phải khớp với field trong Kho
+    @OneToOne(mappedBy ="sanPham", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Kho kho;
+
+    public Kho getKho() {
+        return kho;
+    }
+
+    public void setKho(Kho kho) {
+        this.kho = kho;
+    }
 
     public String getMaSanPham() {
         return maSanPham;

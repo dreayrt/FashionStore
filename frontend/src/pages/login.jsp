@@ -114,36 +114,40 @@ pageEncoding="UTF-8"%>
         <a class="helper-link small" href="/">← Trang chủ</a>
       </div>
 
-      <jsp:useBean id="loginRequest" class="com.dreayrt.fashion_store.DTOs.LoginRequest" scope="request" />
-      <form:form action="/pages/login" method="post" modelAttribute="loginRequest" class="mt-3">
+
+      <form action="/login" method="post"  class="mt-3">
         <div class="mb-3">
-            <c:if test="${loginError !=null}">
+            <c:if test="${param.error != null}">
                 <div class="alert alert-danger">
-                    ${loginError}
+                    Sai tên đăng nhập hoặc mật khẩu
                 </div>
             </c:if>
           <label for="email" class="form-label">Tên Đăng Nhập</label>
-          <form:input
+          <input
             class="form-control"
             id="username"
-            path="username"
+            name="username"
             placeholder="username"
             value="${savedUsername}"
+            required
           />
-            <form:errors path="username" cssClass="text-danger"/>
+            <div class="invalid-feedback">
+                Username không được để trống
+            </div>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Mật khẩu</label>
-            <form:input
+            <input
             type="password"
             class="form-control"
             id="password"
-            path="password"
+            name="password"
             placeholder="••••••••"
-
+            required
           />
-            <form:errors path="password" cssClass="text-danger"/>
-
+            <div class="invalid-feedback">
+                Password không được để trống
+            </div>
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="form-check">
@@ -152,7 +156,7 @@ pageEncoding="UTF-8"%>
               type="checkbox"
               value="true"
               id="remember"
-              name="remember"
+              name="remember-me"
             />
             <label class="form-check-label" for="remember">Nhớ tôi</label>
           </div>
@@ -161,7 +165,7 @@ pageEncoding="UTF-8"%>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Đăng nhập</button>
         </div>
-      </form:form>
+      </form>
 
       <p class="text-center mt-4 mb-0">
         Chưa có tài khoản?
@@ -171,4 +175,19 @@ pageEncoding="UTF-8"%>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
+  <script>
+      (() => {
+          const form = document.querySelector("form");
+
+          form.addEventListener("submit", function (event) {
+              if (!form.checkValidity()) {
+                  event.preventDefault();
+                  event.stopPropagation();
+              }
+
+              form.classList.add("was-validated");
+          });
+      })();
+  </script>
 </html>
+

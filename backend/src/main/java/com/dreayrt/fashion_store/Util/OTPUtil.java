@@ -1,4 +1,4 @@
-package com.dreayrt.fashion_store;
+package com.dreayrt.fashion_store.Util;
 
 import java.security.SecureRandom;
 

@@ -26,61 +26,7 @@ public class LoginController {
     private AuthService authService;
 
     @GetMapping("/pages/login")
-    public String Login(HttpServletRequest request, HttpSession session, Model model) {
-        if (session.getAttribute("user") != null) {
-            return "redirect:/";
-        }
-        //auto login with cookie
-        if (request.getCookies() != null) {
-            for (Cookie c : request.getCookies()) {
-                if ("REMEMBER_LOGIN".equals(c.getName())) {
-                    String username = c.getValue().trim();
-                    taiKhoanRepository.findByUsername(username)
-                            .filter(t -> t.getUsername() != null && t.getUsername().trim().equals(username))
-                            .ifPresent(t -> session.setAttribute("user", t));
-                    if (session.getAttribute("user") != null) {
-                        return "redirect:/";
-                    }
-                }
-                if ("REMEMBER_USERNAME".equals(c.getName())) {
-                    model.addAttribute("savedUsername", c.getValue());
-                }
-            }
-        }
-        model.addAttribute("loginRequest", new LoginRequest());
+    public String Login() {
         return "pages/login";
-    }
-
-    @PostMapping("/pages/login")
-    public String login(@Valid @ModelAttribute LoginRequest loginRequest, BindingResult bindingResult, Model model, SessionStatus sessionStatus, HttpSession httpSession, HttpServletResponse response) {
-        if(bindingResult.hasErrors()){
-            return "pages/login";
-        }
-        try{
-            TaiKhoan user= authService.Login(loginRequest.getUsername(), loginRequest.getPassword());
-            httpSession.setAttribute("user", user);
-
-            //cookie remember account
-            if(Boolean.TRUE.equals(loginRequest.getRemember())){
-                String username = user.getUsername().trim();
-
-                Cookie loginCookie = new Cookie("REMEMBER_LOGIN", username);
-                loginCookie.setMaxAge(7 * 24 * 60 * 60);
-                loginCookie.setPath("/");
-                loginCookie.setHttpOnly(true);
-                response.addCookie(loginCookie);
-
-                // cookie nhớ username
-                Cookie userCookie = new Cookie("REMEMBER_USERNAME", username);
-                userCookie.setMaxAge(30 * 24 * 60 * 60);
-                userCookie.setPath("/");
-                response.addCookie(userCookie);
-
-            }
-            return "redirect:/";
-        }catch(RuntimeException e){
-            model.addAttribute("loginError", e.getMessage());
-            return "pages/login";
-        }
     }
 }

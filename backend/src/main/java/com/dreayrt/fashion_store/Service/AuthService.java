@@ -1,10 +1,10 @@
 package com.dreayrt.fashion_store.Service;
 
 import com.dreayrt.fashion_store.DTOs.RegisterRequest;
-import com.dreayrt.fashion_store.HashUtil;
+import com.dreayrt.fashion_store.Util.HashUtil;
 import com.dreayrt.fashion_store.Model.Entities.OtpLog;
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
-import com.dreayrt.fashion_store.OTPUtil;
+import com.dreayrt.fashion_store.Util.OTPUtil;
 import com.dreayrt.fashion_store.repository.OtpLogRepository;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
 import jakarta.servlet.http.HttpSession;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Service
 public class AuthService {
