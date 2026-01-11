@@ -281,7 +281,7 @@ pageEncoding="UTF-8"%>
               <a class="nav-link" href="#about">Chúng tôi</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#products">Sản phẩm</a>
+              <a class="nav-link" href="/pages/products">Sản phẩm</a>
             </li>
           </ul>
             <c:if test="${sessionScope.user != null}">

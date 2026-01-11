@@ -1,0 +1,150 @@
+package com.dreayrt.fashion_store.Model.Entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "SanPham")
+public class SanPham {
+    @Id
+    @Column(name="MaSanPham")
+    private String maSanPham;
+
+    @Column(name="TenSanPham")
+    private String tenSanPham;
+
+    @Column(name="GiaSanPham")
+    private BigDecimal giaSanPham;
+
+    @Column(name="SoLuong")
+    private int soLuong;
+
+    @Column(name="Size")
+    private String size;
+
+    @Column(name="Loai")
+    private String loai;
+
+    @Column(name="TrangThai")
+    private String trangThai;
+
+    @Column(name="MoTa")
+    private String moTa;
+    @Column(name ="Tag")
+    private String tag;
+    @Column(name = "GioiTinh")
+    private Integer gioiTinh;
+    @Column(name="AnhChinh")
+    private String anhChinh;
+    @Column(name="AnhChiTiet1")
+    private String anhChiTiet1;
+    @Column(name="AnhChiTiet2")
+    private String anhChiTiet2;
+
+    public String getMaSanPham() {
+        return maSanPham;
+    }
+
+    public void setMaSanPham(String maSanPham) {
+        this.maSanPham = maSanPham;
+    }
+
+    public String getTenSanPham() {
+        return tenSanPham;
+    }
+
+    public void setTenSanPham(String tenSanPham) {
+        this.tenSanPham = tenSanPham;
+    }
+
+    public BigDecimal getGiaSanPham() {
+        return giaSanPham;
+    }
+
+    public void setGiaSanPham(BigDecimal giaSanPham) {
+        this.giaSanPham = giaSanPham;
+    }
+
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getLoai() {
+        return loai;
+    }
+
+    public void setLoai(String loai) {
+        this.loai = loai;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public Integer getGioiTinh() {
+        return gioiTinh;
+    }
+
+    public void setGioiTinh(Integer gioiTinh) {
+        this.gioiTinh = gioiTinh;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public String getAnhChinh() {
+        return anhChinh;
+    }
+
+    public void setAnhChinh(String anhChinh) {
+        this.anhChinh = anhChinh;
+    }
+
+    public String getAnhChiTiet2() {
+        return anhChiTiet2;
+    }
+
+    public void setAnhChiTiet2(String anhChiTiet2) {
+        this.anhChiTiet2 = anhChiTiet2;
+    }
+
+    public String getAnhChiTiet1() {
+        return anhChiTiet1;
+    }
+
+    public void setAnhChiTiet1(String anhChiTiet1) {
+        this.anhChiTiet1 = anhChiTiet1;
+    }
+}
