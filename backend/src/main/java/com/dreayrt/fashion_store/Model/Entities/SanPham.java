@@ -3,6 +3,7 @@ package com.dreayrt.fashion_store.Model.Entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "SanPham")
@@ -16,12 +17,6 @@ public class SanPham {
 
     @Column(name="GiaSanPham")
     private BigDecimal giaSanPham;
-
-    @Column(name="SoLuong")
-    private int soLuong;
-
-    @Column(name="Size")
-    private String size;
 
     @Column(name="Loai")
     private String loai;
@@ -42,17 +37,10 @@ public class SanPham {
     @Column(name="AnhChiTiet2")
     private String anhChiTiet2;
 
-    // Link tới bảng Kho; property name phải khớp với field trong Kho
-    @OneToOne(mappedBy ="sanPham", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private Kho kho;
+    @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL)
+    private List<SanPhamSize> sizes;
 
-    public Kho getKho() {
-        return kho;
-    }
 
-    public void setKho(Kho kho) {
-        this.kho = kho;
-    }
 
     public String getMaSanPham() {
         return maSanPham;
@@ -76,22 +64,6 @@ public class SanPham {
 
     public void setGiaSanPham(BigDecimal giaSanPham) {
         this.giaSanPham = giaSanPham;
-    }
-
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public String getLoai() {

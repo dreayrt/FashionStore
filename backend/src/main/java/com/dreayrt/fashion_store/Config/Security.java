@@ -25,6 +25,7 @@ public class Security {
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/img/**", "/imageProduct/**", "/Logo/**").permitAll()
                         // Trang kho chỉ admin hoặc staff
                         .requestMatchers("/pages/kho").hasAnyRole("ADMIN","STAFF")
+                        .requestMatchers("pages/addProducts").hasAnyRole("ADMIN","STAFF")
                         // Còn lại cho truy cập (để tránh redirect loop, cho phép tạm thời)
                         .anyRequest().permitAll()
                 )
@@ -45,9 +46,6 @@ public class Security {
                         .tokenValiditySeconds(7 * 24 * 60 * 60)
                 )
                 .csrf(csrf -> csrf.disable());
-
-
-
 
                 return http.build();
 

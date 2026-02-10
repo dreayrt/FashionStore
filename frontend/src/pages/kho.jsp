@@ -196,7 +196,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         <a class="nav-btn primary" href="<c:url value='/'/>"
           >← Quay lại trang chủ</a
         >
-        <a class="nav-btn" href="<c:url value='/pages/product/add'/>"
+        <a class="nav-btn" href="<c:url value='/pages/addProducts'/>"
           >＋ Thêm sản phẩm</a
         >
         <a class="nav-btn" href="<c:url value='/pages/product/edit'/>"
@@ -269,15 +269,15 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
       const stockData = [];
       <c:forEach items="${ListSanPhamKho}" var="p">
       stockData.push({
-        id: "${p.sanPham.maSanPham}",
-        name: "${fn:escapeXml(p.sanPham.tenSanPham)}",
-        description: "${fn:escapeXml(p.sanPham.moTa)}",
-        price: Number("${p.sanPham.giaSanPham}"),
-        quantity: Number("${p.soLuong}"),
-        size: "${p.sanPham.size}",
-        dateUpdate:"${p.ngayCapNhat}",
-        updatedBy: "<c:out value='${p.nguoiCapNhat.username}'/>",
-        image: "<c:url value='/imageProduct/${p.sanPham.anhChinh}'/>"
+          id: "${p.sanPhamSize.sanPham.maSanPham}",
+          name: "${fn:escapeXml(p.sanPhamSize.sanPham.tenSanPham)}",
+          description: "${fn:escapeXml(p.sanPhamSize.sanPham.moTa)}",
+          price: Number("${p.sanPhamSize.sanPham.giaSanPham}"),
+          quantity: Number("${p.soLuong}"),
+          size: "${p.sanPhamSize.size}",
+          dateUpdate: "${p.ngayCapNhat}",
+          updatedBy: "<c:out value='${p.nguoiCapNhat.username}'/>",
+          image: "<c:url value='/imageProduct/${p.sanPhamSize.sanPham.anhChinh}'/>"
       });
       </c:forEach>
 

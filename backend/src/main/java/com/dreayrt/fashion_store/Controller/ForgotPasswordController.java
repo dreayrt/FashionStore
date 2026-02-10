@@ -26,7 +26,8 @@ public class ForgotPasswordController {
         if(!model.containsAttribute("ForgotPasswordRequest")){
             model.addAttribute("ForgotPasswordRequest", new ForgotPasswordRequest());
         }
-        return "/pages/forgotPassword";
+        // Không dùng "/" đầu để tránh view prefix thành "//" và bị firewall chặn
+        return "pages/forgotPassword";
     }
     @PostMapping("/pages/forgotPassword")
     public String ForgotPassword(@ModelAttribute("ForgotPasswordRequest")  ForgotPasswordRequest forgotPasswordRequest ,
@@ -36,10 +37,10 @@ public class ForgotPasswordController {
             authService.forgotPassword(forgotPasswordRequest.getEmail());
             session.setAttribute("emailForgot", normalizedEmail);
             model.addAttribute("SuccessMessage","Đã Gửi Mã OTP Đến " +forgotPasswordRequest.getEmail());
-            return "/pages/forgotPassword";
+            return "pages/forgotPassword";
         }catch(RuntimeException e){
             model.addAttribute("forgotPasswordError",e.getMessage());
-            return "/pages/forgotPassword";
+            return "pages/forgotPassword";
         }
 
     }

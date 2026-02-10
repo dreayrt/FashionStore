@@ -33,7 +33,8 @@ public class OtpForgotController {
             }
             model.addAttribute("OtpForgotRequest", req);
         }
-        return "/pages/OtpForgot";
+        // Trả về view không có "/" đầu để tránh "//" trong đường dẫn JSP
+        return "pages/OtpForgot";
     }
     @PostMapping("pages/OtpForgot")
     public String OtpForgot(@Valid @ModelAttribute OtpForgotRequest otpForgotRequest,

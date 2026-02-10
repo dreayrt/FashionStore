@@ -19,18 +19,19 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
-    @Autowired
-    private HttpSession httpSession;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
+
+//authentication dai dien cho doi tuong login vao he thong chua cac thong tin nhu:
+//        role,username,da xac thuc hay chua,thong tin chi tiet
         String username = authentication.getName();
         TaiKhoan user = taiKhoanRepository.findByUsername(username).orElse(null);
         if (user != null) {
-            // Lưu user vào session để JSP dùng sessionScope.user
-            httpSession.setAttribute("user", user);
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
         }
         super.onAuthenticationSuccess(request, response, authentication);
     }

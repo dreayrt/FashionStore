@@ -8,29 +8,36 @@ import java.util.Date;
 @Table(name = "Kho")
 public class Kho {
     @Id
-    @Column(name = "MaSanPham")
-    private String maSanPham;
+    @Column(name = "MaSPSize")
+    private Integer maSPSize;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "MaSPSize")
+    private SanPhamSize sanPhamSize;
 
     @Column(name = "SoLuong")
     private Integer soLuong;
-    @Column(name = "NgayCapNhat")
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date ngayCapNhat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="NguoiCapNhat")
+    @JoinColumn(name = "NguoiCapNhat")
     private TaiKhoan nguoiCapNhat;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name="MaSanPham")
-    private SanPham sanPham;
-
-    public String getMaSanPham() {
-        return maSanPham;
+    public Integer getMaSPSize() {
+        return maSPSize;
     }
 
-    public void setMaSanPham(String maSanPham) {
-        this.maSanPham = maSanPham;
+
+
+    public SanPhamSize getSanPhamSize() {
+        return sanPhamSize;
+    }
+
+    public void setSanPhamSize(SanPhamSize sanPhamSize) {
+        this.sanPhamSize = sanPhamSize;
     }
 
     public Integer getSoLuong() {
@@ -55,13 +62,5 @@ public class Kho {
 
     public void setNguoiCapNhat(TaiKhoan nguoiCapNhat) {
         this.nguoiCapNhat = nguoiCapNhat;
-    }
-
-    public SanPham getSanPham() {
-        return sanPham;
-    }
-
-    public void setSanPham(SanPham sanPham) {
-        this.sanPham = sanPham;
     }
 }

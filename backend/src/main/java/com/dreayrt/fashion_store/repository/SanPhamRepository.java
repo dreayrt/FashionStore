@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SanPhamRepository extends JpaRepository<SanPham, String> {
     List<SanPham> findAll();
+
 }

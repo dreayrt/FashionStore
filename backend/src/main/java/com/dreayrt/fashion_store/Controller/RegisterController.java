@@ -20,21 +20,23 @@ public class RegisterController {
 
     @GetMapping("/pages/register")
     public String register(){
-        // JSP is located under /WEB-INF/jsp/pages/register.jsp
         return "pages/register";
     }
     @PostMapping("/pages/register")
-    public String register(@Valid @ModelAttribute("RegisterRequest") RegisterRequest registerRequest, BindingResult bindingResult,Model model){
+    public String register(@Valid @ModelAttribute("RegisterRequest") RegisterRequest registerRequest,
+                           BindingResult bindingResult,
+                           Model model){
         if(bindingResult.hasErrors()){
             return "pages/register";
         }
         try{
             authService.Register(registerRequest);
             model.addAttribute("RegisterSuccess",true);
-            return "/pages/register";
+            // Trả về view mà không có dấu "/" đầu để tránh prefix tạo ra "//" và bị StrictHttpFirewall chặn
+            return "pages/register";
         }catch(RuntimeException e) {
             model.addAttribute("RegisterError", e.getMessage());
-            return "/pages/register";
+            return "pages/register";
         }
     }
 
