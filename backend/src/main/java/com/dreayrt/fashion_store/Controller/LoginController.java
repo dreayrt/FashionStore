@@ -9,13 +9,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
@@ -26,7 +29,11 @@ public class LoginController {
     private AuthService authService;
 
     @GetMapping("/pages/login")
-    public String Login() {
+    public String Login(@RequestParam(value = "error",required = false) String error, Model model) {
+        if (error != null) {
+         model.addAttribute("loginError", "Sai tài khoản hoặc mật khẩu!");
+         }
         return "pages/login";
     }
+
 }

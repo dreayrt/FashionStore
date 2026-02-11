@@ -45,6 +45,7 @@ public class Security {
                         .key("fashion-store-key")
                         .tokenValiditySeconds(7 * 24 * 60 * 60)
                 )
+                .exceptionHandling(ex->ex.accessDeniedPage("/pages/failed"))
                 .csrf(csrf -> csrf.disable());
 
                 return http.build();

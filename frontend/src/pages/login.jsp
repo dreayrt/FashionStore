@@ -117,9 +117,9 @@ pageEncoding="UTF-8"%>
 
       <form action="/login" method="post"  class="mt-3">
         <div class="mb-3">
-            <c:if test="${param.error != null}">
+            <c:if test="${loginError != null}">
                 <div class="alert alert-danger">
-                    Sai tên đăng nhập hoặc mật khẩu
+                        ${loginError}
                 </div>
             </c:if>
           <label for="email" class="form-label">Tên Đăng Nhập</label>
@@ -185,7 +185,7 @@ pageEncoding="UTF-8"%>
                   event.stopPropagation();
               }
 
-              form.classList.add("was-validated");
+
           });
       })();
   </script>

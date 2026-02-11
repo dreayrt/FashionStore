@@ -393,7 +393,6 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                   />
                   <form:input
                     type="number"
-                    min="0"
                     step="1"
                     class="form-control"
                     path="soLuong"
@@ -451,7 +450,6 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                   />
                   <form:input
                     type="number"
-                    min="0"
                     class="form-control"
                     path="giaSanPham"
                     placeholder="VD: 350000"

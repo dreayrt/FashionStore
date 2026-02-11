@@ -4,6 +4,7 @@ import com.dreayrt.fashion_store.DTOs.AddProductPersisRequest;
 
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import com.dreayrt.fashion_store.Service.AddProductFlow;
+import com.dreayrt.fashion_store.Service.ProductsService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class AddProductPersisController {
     private HttpSession httpSession;
     @Autowired
     private AddProductFlow  addProductFlow;
+    @Autowired
+    private ProductsService productsService;
 
     @GetMapping("/pages/addProducts")
     public String addProductPersis(Model model) {
@@ -48,11 +51,28 @@ public class AddProductPersisController {
                 addProductPersisRequest.getAnhChiTiet1() != null ? addProductPersisRequest.getAnhChiTiet1().getOriginalFilename() : "null",
                 addProductPersisRequest.getAnhChiTiet2() != null ? addProductPersisRequest.getAnhChiTiet2().getOriginalFilename() : "null");
 
+
+
+        boolean isNew=productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isEmpty();
+        if (isNew) {
+            if(addProductPersisRequest.getAnhChinh()==null||addProductPersisRequest.getAnhChinh().isEmpty()) {
+                bindingResult.rejectValue("anhChinh","anhChinh.required","Định Treo Đầu Dê Bán Thịt Chó À?");
+            }
+            if(addProductPersisRequest.getAnhChiTiet1()==null||addProductPersisRequest.getAnhChiTiet1().isEmpty()) {
+                bindingResult.rejectValue("anhChiTiet1","anhChiTiet1.required","Gán Thêm 1 Ảnh Chi Tiết Đi");
+            }
+            if(addProductPersisRequest.getAnhChiTiet2()==null||addProductPersisRequest.getAnhChiTiet2().isEmpty()) {
+                bindingResult.rejectValue("anhChiTiet2","anhChiTiet2.required","Gán Thêm 1 Ảnh Chi Tiết Đi");
+            }
+        }
+
+
         if (bindingResult.hasErrors()) {
             log.warn("Validation errors when adding product: {}", bindingResult.getAllErrors());
             model.addAttribute("AddProductPersisRequestFailed", true);
             return "pages/addProducts";
         }
+
         TaiKhoan nguoiCapNhat = (TaiKhoan) httpSession.getAttribute("user");
         if (nguoiCapNhat == null) {
             log.warn("Add product attempted without authenticated user");
