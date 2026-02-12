@@ -199,8 +199,8 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         <a class="nav-btn" href="<c:url value='/pages/addProducts'/>"
           >＋ Thêm sản phẩm</a
         >
-        <a class="nav-btn" href="<c:url value='/pages/product/edit'/>"
-          >✎ Sửa sản phẩm</a
+        <a class="nav-btn" href="<c:url value='/pages/updateProducts'/>"
+          >✎ Cập nhật sản phẩm</a
         >
         <a class="nav-btn" href="<c:url value='/pages/product/delete'/>"
           >✕ Xóa sản phẩm</a
