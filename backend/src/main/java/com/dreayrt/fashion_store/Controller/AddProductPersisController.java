@@ -66,6 +66,10 @@ public class AddProductPersisController {
             }
         }
 
+        boolean exists = productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isPresent();
+        if (exists) {
+            bindingResult.rejectValue("maSanPham", "duplicate", "Mã sản phẩm đã tồn tại");
+        }
 
         if (bindingResult.hasErrors()) {
             log.warn("Validation errors when adding product: {}", bindingResult.getAllErrors());
@@ -86,6 +90,7 @@ public class AddProductPersisController {
         }catch(RuntimeException e){
             log.error("Add product failed", e);
             model.addAttribute("AddProductPersisRequestFailed", true);
+            model.addAttribute("MaSPError","Sản Phẩm Đã Tồn Tại");
             return "pages/addProducts";
         }
         return "pages/addProducts";

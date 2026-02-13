@@ -8,6 +8,7 @@ import com.dreayrt.fashion_store.repository.SanPhamSizeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Optional;
@@ -29,29 +30,30 @@ public class ProductsService {
     }
 
     @Transactional
-    public SanPham saveOrUpdateSanPham(@ModelAttribute AddProductPersisRequest req){
-
-        SanPham sp=sanPhamRepository.findById(req.getMaSanPham()).orElseGet(()->{
-            SanPham newSp=new SanPham();
-            newSp.setMaSanPham(req.getMaSanPham());
-            return newSp;
-        });
-        String mainName = (req.getAnhChinh() != null && !req.getAnhChinh().isEmpty())
-                ? req.getAnhChinh().getOriginalFilename()
-                : sp.getAnhChinh();
-        String detail1 = (req.getAnhChiTiet1() != null && !req.getAnhChiTiet1().isEmpty())
-                ? req.getAnhChiTiet1().getOriginalFilename()
-                : sp.getAnhChiTiet1();
-        String detail2 = (req.getAnhChiTiet2() != null && !req.getAnhChiTiet2().isEmpty())
-                ? req.getAnhChiTiet2().getOriginalFilename()
-                : sp.getAnhChiTiet2();
-        sp.setTenSanPham(req.getTenSanPham());
+    public SanPham CreateSanPham(@ModelAttribute AddProductPersisRequest req){
+//        Optional<SanPham> maSP = sanPhamRepository.findById(req.getMaSanPham());
+////        isPresent la co du lieu ben trong hay khong tra ve dang true or false
+//        if(maSP.isPresent()){
+//            throw new RuntimeException("San Pham Da Ton Tai");
+//        }
+        SanPham sp = new SanPham();
         sp.setMaSanPham(req.getMaSanPham());
+        sp.setTenSanPham(req.getTenSanPham());
         sp.setGiaSanPham(req.getGiaSanPham());
         sp.setLoai(req.getLoai());
         sp.setMoTa(req.getMoTa());
         sp.setGioiTinh(req.getGioiTinh());
         sp.setTag(req.getTag());
+//        getOriginalFilename:lay file goc nguoi dung upload len
+        String mainName = (req.getAnhChinh() != null && !req.getAnhChinh().isEmpty())
+                ? req.getAnhChinh().getOriginalFilename()
+                : null;
+        String detail1 = (req.getAnhChiTiet1() != null && !req.getAnhChiTiet1().isEmpty())
+                ? req.getAnhChiTiet1().getOriginalFilename()
+                : null;
+        String detail2 = (req.getAnhChiTiet2() != null && !req.getAnhChiTiet2().isEmpty())
+                ? req.getAnhChiTiet2().getOriginalFilename()
+                : null;
         sp.setAnhChinh(mainName);
         sp.setAnhChiTiet1(detail1);
         sp.setAnhChiTiet2(detail2);

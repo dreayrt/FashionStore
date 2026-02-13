@@ -17,7 +17,7 @@ public class AddProductFlow {
 
     @Transactional
     public void addProduct(AddProductPersisRequest req, TaiKhoan user){
-        SanPham sp = productsService.saveOrUpdateSanPham(req);
+        SanPham sp = productsService.CreateSanPham(req);
         SanPhamSize size=productsService.getOrCreateSPSize(sp,req.getSize());
         persistenceService.upSetPer(size,req.getSoLuong(),user);
 
