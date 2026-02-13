@@ -227,6 +227,91 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         opacity: 0.5;
       }
 
+      /* Modern modal styling - stronger visual difference */
+      #updateModal .modal-dialog {
+        max-width: 860px;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      #updateModal .modal-content {
+        border: 1px solid #dbe4f2;
+        border-radius: 22px;
+        background: #ffffff;
+        box-shadow: 0 28px 70px rgba(17, 24, 39, 0.24);
+        overflow: hidden;
+      }
+
+      #updateModal .modal-header {
+        padding: 26px 32px 20px;
+        border-bottom: 1px solid #e6edf8;
+        background: linear-gradient(180deg, #f7faff 0%, #ffffff 100%);
+      }
+
+      #updateModal .modal-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #24324a;
+      }
+
+      #updateModal .modal-body {
+        padding: 30px 32px 24px;
+        background: #ffffff;
+      }
+
+      #updateModal .modal-footer {
+        padding: 18px 32px 24px;
+        border-top: 1px solid #e6edf8;
+        background: #f7faff;
+      }
+
+      #updateModal .form-label {
+        color: #334155;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 1.05rem;
+      }
+
+      #updateModal .form-control,
+      #updateModal .form-select {
+        border-radius: 12px;
+        border: 1px solid #cfd8e6;
+        padding: 13px 15px;
+        background-color: #ffffff;
+        font-size: 1.05rem;
+      }
+
+      #updateModal .form-control:focus,
+      #updateModal .form-select:focus {
+        border-color: #6f8cff;
+        box-shadow: 0 0 0 0.24rem rgba(79, 110, 255, 0.16);
+      }
+
+      #updateModal textarea.form-control {
+        min-height: 120px;
+      }
+
+      #updateModal .btn-secondary {
+        background: #6d7582;
+        border-color: #6d7582;
+      }
+
+      #updateModal .btn-primary {
+        background: linear-gradient(135deg, #4c74ff, #355de7);
+        border-color: #355de7;
+      }
+
+      #updateModal .btn-primary:hover {
+        background: linear-gradient(135deg, #4369ea, #2f55d6);
+        border-color: #2f55d6;
+      }
+
+      #updateModal .btn {
+        border-radius: 11px;
+        padding: 10px 18px;
+        font-weight: 700;
+      }
+
       @media (max-width: 992px) {
         .page-wrap {
           grid-template-columns: 1fr;
@@ -301,7 +386,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
           </div>
         </div>
           <div class="modal fade" id="updateModal" tabindex="-1">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                       <div class="modal-header">
                           <h5 class="modal-title">Thông Tin Sản Phẩm</h5>
@@ -309,11 +394,95 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                                   aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                          <p>Modal body text goes here.</p>
+                          <form action="pages/updateProducts" id="updateProductForm" method="post" enctype="multipart/form-data">
+                              <div class="row g-4">
+                                  <div class="col-md-6">
+                                      <label for="maSanPham" class="form-label">Mã sản phẩm</label>
+                                      <input type="text" class="form-control" id="maSanPham" name="maSanPham" placeholder="Nhập mã sản phẩm" />
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label for="tenSanPham" class="form-label">Tên sản phẩm</label>
+                                      <input type="text" class="form-control" id="tenSanPham" name="tenSanPham" placeholder="Nhập tên sản phẩm" />
+                                  </div>
+
+                                  <div class="col-md-6">
+                                      <label for="giaBan" class="form-label">Giá bán</label>
+                                      <input type="number" class="form-control" id="giaBan" name="giaBan" placeholder="Nhập giá bán" min="0" step="1000" />
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label for="soLuong" class="form-label">Số lượng</label>
+                                      <input type="number" class="form-control" id="soLuong" name="soLuong" placeholder="Nhập số lượng" min="0" />
+                                  </div>
+
+                                  <div class="col-md-6">
+                                      <label for="tag" class="form-label">Tag</label>
+                                      <input type="text" class="form-control" id="tag" name="tag" placeholder="Ví dụ: Mới, Bán chạy" />
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label for="loaiSanPham" class="form-label">Loại sản phẩm</label>
+                                      <select class="form-select" id="loaiSanPham" name="loaiSanPham">
+                                          <option value="">-- Chọn loại sản phẩm --</option>
+                                          <option value="AO">Áo</option>
+                                          <option value="QUAN">Quần</option>
+                                          <option value="DAM_VAY">Đầm/Váy</option>
+                                          <option value="PHU_KIEN">Phụ kiện</option>
+                                          <option value="KHAC">Khác</option>
+                                      </select>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                      <label for="gioiTinh" class="form-label">Giới tính</label>
+                                      <select class="form-select" id="gioiTinh" name="gioiTinh">
+                                          <option value="">-- Chọn giới tính --</option>
+                                          <option value="NAM">Nam</option>
+                                          <option value="NU">Nữ</option>
+                                          <option value="UNISEX">Unisex</option>
+                                      </select>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label for="size" class="form-label">Size</label>
+                                      <select class="form-select" id="size" name="size">
+                                          <option value="">-- Chọn size --</option>
+                                          <option value="S">S</option>
+                                          <option value="M">M</option>
+                                          <option value="L">L</option>
+                                          <option value="XL">XL</option>
+                                          <option value="XXL">XXL</option>
+                                      </select>
+                                  </div>
+
+                                  <div class="col-12">
+                                      <label for="moTa" class="form-label">Mô tả</label>
+                                      <textarea class="form-control" id="moTa" name="moTa" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <label for="anhChinh" class="form-label">Ảnh chính</label>
+                                      <input type="file" class="form-control" id="anhChinh" name="anhChinh" accept="image/*" />
+                                      <div class="small text-muted mt-2" id="anhChinhName">Chưa có ảnh hiện tại</div>
+                                      <img id="anhChinhPreview" alt="Ảnh chính hiện tại" class="img-fluid mt-2 rounded border" style="max-height: 120px; display: none;" />
+                                  </div>
+                                  <div class="col-md-4">
+                                      <label for="anhChiTiet1" class="form-label">Ảnh chi tiết 1</label>
+                                      <input type="file" class="form-control" id="anhChiTiet1" name="anhChiTiet1" accept="image/*" />
+                                      <div class="small text-muted mt-2" id="anhChiTiet1Name">Chưa có ảnh hiện tại</div>
+                                      <img id="anhChiTiet1Preview" alt="Ảnh chi tiết 1 hiện tại" class="img-fluid mt-2 rounded border" style="max-height: 120px; display: none;" />
+                                  </div>
+                                  <div class="col-md-4">
+                                      <label for="anhChiTiet2" class="form-label">Ảnh chi tiết 2</label>
+                                      <input type="file" class="form-control" id="anhChiTiet2" name="anhChiTiet2" accept="image/*" />
+                                      <div class="small text-muted mt-2" id="anhChiTiet2Name">Chưa có ảnh hiện tại</div>
+                                      <img id="anhChiTiet2Preview" alt="Ảnh chi tiết 2 hiện tại" class="img-fluid mt-2 rounded border" style="max-height: 120px; display: none;" />
+                                  </div>
+                                  <input type="hidden" id="oldAnhChinh" name="oldAnhChinh" />
+                                  <input type="hidden" id="oldAnhChiTiet1" name="oldAnhChiTiet1" />
+                                  <input type="hidden" id="oldAnhChiTiet2" name="oldAnhChiTiet2" />
+                              </div>
+                          </form>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                          <button type="button" class="btn btn-primary">Xác Nhận</button>
+                          <button type="submit" class="btn btn-primary" form="updateProductForm">Xác Nhận</button>
                       </div>
                   </div>
               </div>
@@ -327,40 +496,59 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
             document.getElementById('updateModal')
         );
 
-        document.addEventListener("click", function(e){
-            if(e.target.classList.contains("btn-update")){
-                updateModal.show();
-            }
-        });
+        // document.addEventListener("click", function(e){
+        //     if(e.target.classList.contains("btn-update")){
+        //         updateModal.show();
+        //     }
+        // });
     </script>
     <script>
       // Khởi tạo productData với xử lý null safety
       <c:choose>
-        <c:when test="${empty lstSanPham}">
-          var productData = [];
-        </c:when>
-        <c:otherwise>
-          var productData = [
-            <c:forEach items="${lstSanPham}" var="p" varStatus="i">
-            {
-                id: "<c:out value='${p.maSanPham}' default=''/>",
-                name: "<c:out value='${p.tenSanPham}' default='Không có tên'/>",
-                imageRaw: "<c:out value='${p.anhChinh}' default=''/>"
-            }<c:if test="${!i.last}">,</c:if>
-            </c:forEach>
-          ];
-        </c:otherwise>
+      <c:when test="${empty lstSize}">
+      var productData = [];
+      </c:when>
+      <c:otherwise>
+      var productData = [
+          <c:forEach items="${lstSize}" var="s" varStatus="i">
+          {
+              id: "<c:out value='${s.sanPham.maSanPham}'/>",
+              name: "<c:out value='${s.sanPham.tenSanPham}'/>",
+              price: "<c:out value='${s.sanPham.giaSanPham}'/>",
+              loaiSanPham: "<c:out value='${s.sanPham.loai}'/>",
+              tag: "<c:out value='${s.sanPham.tag}'/>",
+              gioiTinh: "<c:out value='${s.sanPham.gioiTinh}'/>",
+              moTa: "<c:out value='${s.sanPham.moTa}'/>",
+              anhChinh: "<c:out value='${s.sanPham.anhChinh}'/>",
+              anhChiTiet1: "<c:out value='${s.sanPham.anhChiTiet1}'/>",
+              anhChiTiet2: "<c:out value='${s.sanPham.anhChiTiet2}'/>",
+              size: "<c:out value='${s.size}'/>",
+              soLuong: <c:out value="${s.kho != null ? s.kho.soLuong : 0}" default="0"/>
+          }<c:if test="${!i.last}">,</c:if>
+          </c:forEach>
+      ];
+      </c:otherwise>
       </c:choose>
 
       // Chuẩn hóa dữ liệu và tạo URL ảnh
       const productsData = (productData || []).map((p) => {
-        const imageUrl = p.imageRaw && p.imageRaw.trim() !== '' 
-          ? '/imageProduct/' + p.imageRaw 
+        const imageUrl = p.anhChinh && p.anhChinh.trim() !== ''
+          ? '/imageProduct/' + p.anhChinh
           : '';
         return {
           id: p.id || '',
           name: p.name || 'Không có tên',
-          image: imageUrl
+          image: imageUrl,
+          price: p.price || '',
+          loaiSanPham: p.loaiSanPham || '',
+          tag: p.tag || '',
+          gioiTinh: p.gioiTinh || '',
+          moTa: p.moTa || '',
+          anhChinh: p.anhChinh || '',
+          anhChiTiet1: p.anhChiTiet1 || '',
+          anhChiTiet2: p.anhChiTiet2 || '',
+          size: p.size || '',
+          soLuong: p.soLuong || 0
         };
       });
 
@@ -379,12 +567,12 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
 
       function renderProducts(list) {
         console.log('renderProducts called with list length:', list ? list.length : 0);
-        
+
         if (!productsListEl) {
           console.error('Cannot render: productsListEl is null');
           return;
         }
-        
+
         if (!list || list.length === 0) {
           console.log('Rendering empty state');
           productsListEl.innerHTML = `
@@ -400,15 +588,15 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         }
 
         console.log('Rendering', list.length, 'products');
-        
+
         try {
           // Sử dụng DOM API để tránh vấn đề escape trong template string
           productsListEl.innerHTML = '';
-          
+
           list.forEach((product) => {
             const row = document.createElement('div');
             row.className = 'product-row';
-            
+
             // Tạo ảnh
             const img = document.createElement('img');
             img.src = product.image || '';
@@ -418,29 +606,27 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
               this.src = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'120\'%3E%3Crect fill=\'%23f7f7f2\' width=\'100\' height=\'120\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'12\'%3ENo Image%3C/text%3E%3C/svg%3E';
             };
             row.appendChild(img);
-            
+
             // Tạo thông tin sản phẩm
             const productInfo = document.createElement('div');
             productInfo.className = 'product-info';
-            
+
             const productName = document.createElement('div');
             productName.className = 'product-name';
             productName.textContent = product.name || 'Không có tên';
             productInfo.appendChild(productName);
             row.appendChild(productInfo);
-            
+
             // Tạo nút cập nhật
             const btn = document.createElement('button');
             btn.className = 'btn-update';
             btn.textContent = 'Cập nhật';
-            btn.onclick = function() {
-              handleUpdate(product.id || '');
-            };
+              btn.onclick = function() {  handleUpdate(product.id || "", product.size || "");};
             row.appendChild(btn);
-            
+
             productsListEl.appendChild(row);
           });
-          
+
           console.log('Rendering completed successfully');
           console.log('Total elements rendered:', productsListEl.children.length);
         } catch (error) {
@@ -451,7 +637,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
 
       function applyFilter() {
         if (!searchBoxEl) return;
-        
+
         const keyword = searchBoxEl.value.trim().toLowerCase();
         let list = [...productsData];
 
@@ -466,24 +652,110 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         renderProducts(list);
       }
 
-      function handleUpdate(productId) {
-        if (!productId) {
-          console.warn('Product ID is empty');
-          return;
-        }
-        console.log('Cập nhật sản phẩm:', productId);
-        // Ví dụ: window.location.href = '/pages/product/edit?maSanPham=' + encodeURIComponent(productId);
+
+      function setImagePreview(imageName, nameElId, previewElId) {
+          const nameEl = document.getElementById(nameElId);
+          const previewEl = document.getElementById(previewElId);
+          if (!nameEl || !previewEl) return;
+
+          if (previewEl.dataset.objectUrl) {
+              URL.revokeObjectURL(previewEl.dataset.objectUrl);
+              previewEl.dataset.objectUrl = "";
+          }
+
+          if (imageName) {
+              nameEl.textContent = "Ảnh hiện tại: " + imageName;
+              previewEl.src = "/imageProduct/" + imageName;
+              previewEl.style.display = "block";
+          } else {
+              nameEl.textContent = "Chưa có ảnh hiện tại";
+              previewEl.removeAttribute("src");
+              previewEl.style.display = "none";
+          }
       }
 
+      function bindImageInputPreview(inputId, nameElId, previewElId, oldInputId) {
+          const inputEl = document.getElementById(inputId);
+          const nameEl = document.getElementById(nameElId);
+          const previewEl = document.getElementById(previewElId);
+          if (!inputEl || !nameEl || !previewEl) return;
+
+          inputEl.addEventListener("change", function () {
+              const file = inputEl.files && inputEl.files[0];
+              if (file) {
+                  if (previewEl.dataset.objectUrl) {
+                      URL.revokeObjectURL(previewEl.dataset.objectUrl);
+                  }
+                  const objectUrl = URL.createObjectURL(file);
+                  previewEl.dataset.objectUrl = objectUrl;
+                  previewEl.src = objectUrl;
+                  previewEl.style.display = "block";
+                  nameEl.textContent = "Ảnh mới: " + file.name;
+              } else {
+                  const oldNameEl = document.getElementById(oldInputId);
+                  setImagePreview(oldNameEl ? oldNameEl.value : "", nameElId, previewElId);
+              }
+          });
+      }
+
+      function handleUpdate(productId, selectedSize) {
+          const product = productsData.find(
+              (p) => p.id === productId && (!selectedSize || p.size === selectedSize)
+          );
+
+          if (!product) return;
+
+          const normalizeGenderValue = (value) => {
+              if (value === 1 || value === "1" || value === "NAM") return "NAM";
+              if (value === 2 || value === "2" || value === "NU") return "NU";
+              if (value === 3 || value === "3" || value === "UNISEX") return "UNISEX";
+              return "";
+          };
+          const normalizeLoai = (v) => {
+              const x = (v || "").toString().trim().toUpperCase();
+              if (["AO", "ÁO"].includes(x)) return "AO";
+              if (["QUAN", "QUẦN"].includes(x)) return "QUAN";
+              if (["DAM_VAY", "DAMVAY", "ĐẦM", "VAY", "VÁY"].includes(x)) return "DAM_VAY";
+              if (["PHU_KIEN", "PHUKIEN", "PHỤ KIỆN"].includes(x)) return "PHU_KIEN";
+              if (["KHAC", "KHÁC"].includes(x)) return "KHAC";
+              return "";
+          };
+
+          const normalizeSize = (v) => (v || "").toString().trim().toUpperCase();
+
+          document.getElementById("maSanPham").value = product.id || "";
+          document.getElementById("tenSanPham").value = product.name || "";
+          document.getElementById("giaBan").value = product.price || "";
+          document.getElementById("tag").value = product.tag || "";
+          document.getElementById("gioiTinh").value = normalizeGenderValue(product.gioiTinh);
+          document.getElementById("moTa").value = product.moTa || "";
+          document.getElementById("anhChinh").value = "";
+          document.getElementById("anhChiTiet1").value = "";
+          document.getElementById("anhChiTiet2").value = "";
+          document.getElementById("oldAnhChinh").value = product.anhChinh || "";
+          document.getElementById("oldAnhChiTiet1").value = product.anhChiTiet1 || "";
+          document.getElementById("oldAnhChiTiet2").value = product.anhChiTiet2 || "";
+          setImagePreview(product.anhChinh, "anhChinhName", "anhChinhPreview");
+          setImagePreview(product.anhChiTiet1, "anhChiTiet1Name", "anhChiTiet1Preview");
+          setImagePreview(product.anhChiTiet2, "anhChiTiet2Name", "anhChiTiet2Preview");
+          document.getElementById("loaiSanPham").value = normalizeLoai(product.loaiSanPham);
+          document.getElementById("size").value = normalizeSize(product.size);
+          document.getElementById("soLuong").value = product.soLuong || 0;
+
+          updateModal.show();
+      }
       // Đảm bảo DOM đã sẵn sàng và render ngay
       console.log('Document readyState:', document.readyState);
-      
+
       function init() {
         console.log('Initializing...');
         if (searchBoxEl) {
           searchBoxEl.addEventListener("input", applyFilter);
           console.log('Search box event listener added');
         }
+        bindImageInputPreview("anhChinh", "anhChinhName", "anhChinhPreview", "oldAnhChinh");
+        bindImageInputPreview("anhChiTiet1", "anhChiTiet1Name", "anhChiTiet1Preview", "oldAnhChiTiet1");
+        bindImageInputPreview("anhChiTiet2", "anhChiTiet2Name", "anhChiTiet2Preview", "oldAnhChiTiet2");
         renderProducts(productsData);
       }
 
