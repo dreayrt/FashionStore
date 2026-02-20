@@ -5,6 +5,7 @@ import com.dreayrt.fashion_store.DTOs.AddProductPersisRequest;
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import com.dreayrt.fashion_store.Service.AddProductFlow;
 import com.dreayrt.fashion_store.Service.ProductsService;
+import com.dreayrt.fashion_store.repository.SanPhamSizeRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class AddProductPersisController {
     private AddProductFlow  addProductFlow;
     @Autowired
     private ProductsService productsService;
+
+    @Autowired
+    private SanPhamSizeRepository sanPhamSizeRepository;
 
     @GetMapping("/pages/addProducts")
     public String addProductPersis(Model model) {
@@ -66,9 +70,10 @@ public class AddProductPersisController {
             }
         }
 
-        boolean exists = productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isPresent();
-        if (exists) {
-            bindingResult.rejectValue("maSanPham", "duplicate", "Mã sản phẩm đã tồn tại");
+        boolean existsMaSP = productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isPresent();
+        boolean existsSize= sanPhamSizeRepository.findBySanPham_MaSanPhamAndSize(addProductPersisRequest.getMaSanPham().trim(), addProductPersisRequest.getSize()).isPresent();
+        if (existsMaSP && existsSize) {
+            bindingResult.rejectValue("maSanPham", "duplicate", "Sản Phẩm cùng với size này đã tồn tại");
         }
 
         if (bindingResult.hasErrors()) {
