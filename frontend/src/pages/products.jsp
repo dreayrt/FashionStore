@@ -566,26 +566,26 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const productData=[
-          <c:forEach items="${sanPhamList}" var="p" varStatus="i">
+          <c:forEach items="${sanPhamSizeList}" var="p" varStatus="i">
           {
-              id:"${p.maSanPham}",
-              name:"${fn:escapeXml(p.tenSanPham)}",
-              description:"${fn:escapeXml(p.moTa)}",
-              price:Number("${p.giaSanPham}"),
-              quantity:Number("${p.soLuong}"),
+              id:"${p.sanPham.maSanPham}",
+              name:"${fn:escapeXml(p.sanPham.tenSanPham)}",
+              description:"${fn:escapeXml(p.sanPham.moTa)}",
+              price:Number("${p.sanPham.giaSanPham}"),
+              quantity:Number("${p.kho != null ? p.kho.soLuong : 0}"),
               size:"${p.size}",
-              tags: "${fn:escapeXml(p.tag)}"
-                  ? "${fn:escapeXml(p.tag)}".split(",").map(t => t.trim().toLowerCase())
+              tags: "${fn:escapeXml(p.sanPham.tag)}"
+                  ? "${fn:escapeXml(p.sanPham.tag)}".split(",").map(t => t.trim().toLowerCase())
                   : [],
-              gender:${p.gioiTinh == null ? 'null' : p.gioiTinh},
+              gender:${p.sanPham.gioiTinh == null ? 'null' : p.sanPham.gioiTinh},
               images:{
                   main:
                       [
-                          "<c:url value='/imageProduct/${p.anhChinh}'/>",
+                          "<c:url value='/imageProduct/${p.sanPham.anhChinh}'/>",
                       ],
                   detail:[
-                      "<c:url value='/imageProduct/${p.anhChiTiet1}'/>",
-                      "<c:url value='/imageProduct/${p.anhChiTiet2}'/>"
+                      "<c:url value='/imageProduct/${p.sanPham.anhChiTiet1}'/>",
+                      "<c:url value='/imageProduct/${p.sanPham.anhChiTiet2}'/>"
                   ]
               }
 
