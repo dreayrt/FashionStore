@@ -440,7 +440,7 @@
         <a class="nav-btn" href="<c:url value='/pages/addProducts'/>"
         >+ Thêm sản phẩm</a
         >
-        <a class="nav-btn" href="<c:url value='/pages/product/delete'/>"
+        <a class="nav-btn" href="<c:url value='/pages/deleteProducts'/>"
         >✕ Xóa sản phẩm</a
         >
     </aside>

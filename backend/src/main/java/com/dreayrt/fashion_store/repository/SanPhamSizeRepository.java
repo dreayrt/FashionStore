@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface SanPhamSizeRepository extends JpaRepository<SanPhamSize, Integer> {
     Optional<SanPhamSize> findBySanPham_MaSanPhamAndSize(String maSanPham, String size);
+    List<SanPhamSize> findBySanPham_MaSanPham(String maSanPham);
     List<SanPhamSize>findAll();
 }

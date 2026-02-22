@@ -20,7 +20,5 @@ public class AddProductFlow {
         SanPham sp = productsService.CreateSanPham(req);
         SanPhamSize size=productsService.getOrCreateSPSize(sp,req.getSize());
         persistenceService.upSetPer(size,req.getSoLuong(),user);
-
-
     }
 }

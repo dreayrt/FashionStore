@@ -202,7 +202,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         <a class="nav-btn" href="<c:url value='/pages/updateProducts'/>"
           >✎ Cập nhật sản phẩm</a
         >
-        <a class="nav-btn" href="<c:url value='/pages/product/delete'/>"
+        <a class="nav-btn" href="<c:url value='/pages/deleteProducts'/>"
           >✕ Xóa sản phẩm</a
         >
       </aside>

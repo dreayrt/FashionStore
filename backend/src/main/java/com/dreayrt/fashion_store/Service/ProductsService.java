@@ -120,6 +120,7 @@ public class ProductsService {
 
 
     }
+
     public String saveFile(MultipartFile file) {
         try {
             String uploadDir = "/frontend/public/imageProduct/";
@@ -130,6 +131,12 @@ public class ProductsService {
         } catch (Exception e) {
             throw new RuntimeException("Lỗi lưu file", e);
         }
+    }
+
+    @Transactional
+    public void deleteSanPham(String masp, String size) {
+        SanPhamSize spSize = sanPhamSizeRepository.findBySanPham_MaSanPhamAndSize(masp, size).orElseThrow(() -> new RuntimeException("Không Tìm Thấy Sản Phẩm"));
+        sanPhamSizeRepository.delete(spSize);
     }
 
 }

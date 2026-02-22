@@ -16,17 +16,16 @@ public class Security {
     private LoginSuccessHandler loginSuccessHandler;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth ->auth
+                .authorizeHttpRequests(auth -> auth
                         // Trang public
                         .requestMatchers("/pages/login", "/pages/login/**").permitAll()
                         .requestMatchers("/login", "/logout").permitAll()
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/img/**", "/imageProduct/**", "/Logo/**").permitAll()
                         // Trang kho chỉ admin hoặc staff
-                        .requestMatchers("/pages/kho").hasAnyRole("ADMIN","STAFF")
-                        .requestMatchers("pages/addProducts").hasAnyRole("ADMIN","STAFF")
-                        // Còn lại cho truy cập (để tránh redirect loop, cho phép tạm thời)
+                        .requestMatchers("/pages/kho").hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers("/pages/kho/**").hasAnyRole("ADMIN", "STAFF")
                         .anyRequest().permitAll()
                 )
                 .formLogin(login -> login
@@ -45,11 +44,10 @@ public class Security {
                         .key("fashion-store-key")
                         .tokenValiditySeconds(7 * 24 * 60 * 60)
                 )
-                .exceptionHandling(ex->ex.accessDeniedPage("/pages/failed"))
+                .exceptionHandling(ex -> ex.accessDeniedPage("/pages/failed"))
                 .csrf(csrf -> csrf.disable());
 
-                return http.build();
-
+        return http.build();
 
 
     }
