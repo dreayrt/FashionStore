@@ -11,7 +11,7 @@
 
     <artifactId>fashion-store-backend</artifactId>
     <name>FashionStore Backend</name>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <dependencies>
         <dependency>
@@ -25,6 +25,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -96,6 +101,33 @@
 
     <build>
         <plugins>
+            <!-- Copy JSP from frontend for spring-boot:run (run doesn't execute package/war) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-jsp-for-run</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/jsp</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/../frontend/src</directory>
+                                    <includes>
+                                        <include>**/*.jsp</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                            <overwrite>true</overwrite>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -106,46 +138,22 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-frontend-dist-into-backend</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                            <resources>
-                                <!-- JSP vào META-INF/resources/WEB-INF/jsp để Tomcat embedded tìm thấy trong executable jar -->
-                                <resource>
-                                    <directory>${project.basedir}/../frontend/target/dist/WEB-INF/jsp</directory>
-                                    <targetPath>META-INF/resources/WEB-INF/jsp</targetPath>
-                                    <filtering>false</filtering>
-                                </resource>
-                                <!-- Static assets -->
-                                <resource>
-                                    <directory>${project.basedir}/../frontend/target/dist/static</directory>
-                                    <targetPath>META-INF/resources</targetPath>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                            <overwrite>true</overwrite>
-                            <encoding>UTF-8</encoding>
-                            <useDefaultDelimiters>true</useDefaultDelimiters>
-                            <supportMultiLineFiltering>false</supportMultiLineFiltering>
-                            <nonFilteredFileExtensions>
-                                <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
-                                <nonFilteredFileExtension>jpeg</nonFilteredFileExtension>
-                                <nonFilteredFileExtension>png</nonFilteredFileExtension>
-                                <nonFilteredFileExtension>gif</nonFilteredFileExtension>
-                                <nonFilteredFileExtension>webp</nonFilteredFileExtension>
-                                <nonFilteredFileExtension>svg</nonFilteredFileExtension>
-                            </nonFilteredFileExtensions>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                        </configuration>
-                    </execution>
-                </executions>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <resource>
+                            <directory>${project.basedir}/../frontend/target/dist/WEB-INF/jsp</directory>
+                            <targetPath>WEB-INF/jsp</targetPath>
+                            <filtering>false</filtering>
+                        </resource>
+                        <resource>
+                            <directory>${project.basedir}/../frontend/target/dist/static</directory>
+                            <targetPath>/</targetPath>
+                            <filtering>false</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
             </plugin>
         </plugins>
     </build>

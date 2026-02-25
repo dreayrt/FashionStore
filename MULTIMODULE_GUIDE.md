@@ -12,6 +12,7 @@
 
 ### Chạy ứng dụng
 - Từ gốc: `mvn -pl backend spring-boot:run`
+- Với profile `local` (PowerShell): `mvn -pl backend spring-boot:run "-Dspring-boot.run.profiles=local"`
 - Hoặc chạy JAR: `java -jar backend/target/fashion-store-backend-*.jar`
 
 ### Lưu ý JSP
