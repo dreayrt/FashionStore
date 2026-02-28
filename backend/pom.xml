@@ -101,33 +101,6 @@
 
     <build>
         <plugins>
-            <!-- Copy JSP from frontend for spring-boot:run (run doesn't execute package/war) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-jsp-for-run</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/jsp</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/../frontend/src</directory>
-                                    <includes>
-                                        <include>**/*.jsp</include>
-                                    </includes>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                            <overwrite>true</overwrite>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -141,18 +114,6 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <webResources>
-                        <resource>
-                            <directory>${project.basedir}/../frontend/target/dist/WEB-INF/jsp</directory>
-                            <targetPath>WEB-INF/jsp</targetPath>
-                            <filtering>false</filtering>
-                        </resource>
-                        <resource>
-                            <directory>${project.basedir}/../frontend/target/dist/static</directory>
-                            <targetPath>/</targetPath>
-                            <filtering>false</filtering>
-                        </resource>
-                    </webResources>
                 </configuration>
             </plugin>
         </plugins>

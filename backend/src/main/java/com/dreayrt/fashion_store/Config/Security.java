@@ -1,7 +1,10 @@
 package com.dreayrt.fashion_store.Config;
 
+import com.dreayrt.fashion_store.Service.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +17,8 @@ import com.dreayrt.fashion_store.Util.HashUtil;
 public class Security {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
+    @Autowired
+    private CustomUserDetailService customUserDetailService;   // 🔥 thêm dòng này
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,7 +56,18 @@ public class Security {
 
 
     }
+    // 🔥 thêm bean này để bind UserDetailsService vào Security
+    @Bean
+    public AuthenticationManager authenticationManager(
+            HttpSecurity http,
+            PasswordEncoder passwordEncoder) throws Exception {
 
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(customUserDetailService)
+                .passwordEncoder(passwordEncoder)
+                .and()
+                .build();
+    }
     // PasswordEncoder dùng SHA-256 để khớp với giá trị đang lưu trong DB (HashUtil.sha256)
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -17,6 +17,9 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Tài Khoản Không Tồn Tại"));
+
+        System.out.println("USERNAME: " + taiKhoan.getUsername());
+        System.out.println("DB PASSWORD: " + taiKhoan.getPassword());
         return User.builder()
                 .username(taiKhoan.getUsername())
                 .password(taiKhoan.getPassword())
