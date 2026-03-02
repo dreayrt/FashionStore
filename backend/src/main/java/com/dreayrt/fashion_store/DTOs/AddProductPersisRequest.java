@@ -15,6 +15,8 @@ public class AddProductPersisRequest {
     private String tenSanPham;
     @NotBlank(message = "Bạn Quên Chọn Size Nè")
     private String size;
+    @NotBlank(message = "Bạn Quên Đặt Trạng Thái Của Sản Phẩm")
+    private String trangThai;
     @NotNull(message = "Bạn Quên Đặt Giá Sản Phẩm Nè")
     @DecimalMin(value = "0", inclusive = true, message = "Giá Sản Phẩm Không Được Nhỏ Hơn 0")
     private BigDecimal giaSanPham;
@@ -55,6 +57,14 @@ public class AddProductPersisRequest {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 
     public BigDecimal getGiaSanPham() {

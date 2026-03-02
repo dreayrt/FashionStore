@@ -50,6 +50,15 @@ public class UpdateProductPersisController {
         model.addAttribute("lstSanPham", productsService.GetSanPhamList());
         model.addAttribute("lstKho", persistenceService.getSanPhamKhoList());
         model.addAttribute("lstSize", sanPhamSizeRepository.findAll());
+        boolean duplicated = productsService.isDuplicateTenSanPhamForUpdate(
+                req.getTenSanPham(),
+                req.getMaSanPham()
+        );
+
+        if (duplicated) {
+            bindingResult.rejectValue("tenSanPham", "duplicate", "Tên Sản Phẩm Đã Tồn Tại");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("upDateProError",true );
             model.addAttribute("openModal",true);

@@ -1,5 +1,6 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ public class Kho {
     @OneToOne
     @MapsId
     @JoinColumn(name = "MaSPSize")
+    @JsonIgnore
     private SanPhamSize sanPhamSize;
 
     @Column(name = "SoLuong")
@@ -24,6 +26,7 @@ public class Kho {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NguoiCapNhat")
+    @JsonIgnore
     private TaiKhoan nguoiCapNhat;
 
     public Integer getMaSPSize() {

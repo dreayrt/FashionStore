@@ -129,4 +129,7 @@ public class SanPham {
     public void setAnhChiTiet1(String anhChiTiet1) {
         this.anhChiTiet1 = anhChiTiet1;
     }
+
+    public List<SanPhamSize> getSizes() { return sizes; }
+    public void setSizes(List<SanPhamSize> sizes) { this.sizes = sizes; }
 }

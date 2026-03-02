@@ -14,6 +14,8 @@ public class UpdateProductRequest {
     private String tenSanPham;
     @NotBlank(message = "Bạn Quên Đặt Lại Size Nè")
     private String size;
+    @NotBlank(message = "Bạn Quên Đặt Trạng Thái Của Sản Phẩm")
+    private String trangThai;
     @NotNull(message = "Bạn Quên Đặt Lại Giá Nè")
     @Min(value = 0,message = "Định Cho Ngược Lại Người Mua À")
     private BigDecimal giaSanPham;
@@ -122,6 +124,14 @@ public class UpdateProductRequest {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 
     public Integer getGioiTinh() {

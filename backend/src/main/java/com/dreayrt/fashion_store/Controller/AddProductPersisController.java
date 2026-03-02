@@ -25,7 +25,7 @@ public class AddProductPersisController {
     @Autowired
     private HttpSession httpSession;
     @Autowired
-    private AddProductFlow  addProductFlow;
+    private AddProductFlow addProductFlow;
     @Autowired
     private ProductsService productsService;
 
@@ -39,41 +39,48 @@ public class AddProductPersisController {
         }
         return "pages/addProducts";
     }
-    @PostMapping(value = "/pages/addProducts",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    @PostMapping(value = "/pages/addProducts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String AddProductPersis(
             @Valid @ModelAttribute("AddProductPersisRequest") AddProductPersisRequest addProductPersisRequest,
             BindingResult bindingResult,
             Model model) {
-        log.info("POST /pages/addProducts: maSP={}, size={}, gia={}, soLuong={}, loai={}, gioiTinh={}, files=[main:{}, d1:{}, d2:{}]",
+        log.info("POST /pages/addProducts: maSP={}, size={}, gia={}, soLuong={}, loai={}, gioiTinh={},trangThai={} ,files=[main:{}, d1:{}, d2:{}] ",
                 addProductPersisRequest.getMaSanPham(),
                 addProductPersisRequest.getSize(),
                 addProductPersisRequest.getGiaSanPham(),
                 addProductPersisRequest.getSoLuong(),
                 addProductPersisRequest.getLoai(),
                 addProductPersisRequest.getGioiTinh(),
+                addProductPersisRequest.getTrangThai(),
                 addProductPersisRequest.getAnhChinh() != null ? addProductPersisRequest.getAnhChinh().getOriginalFilename() : "null",
                 addProductPersisRequest.getAnhChiTiet1() != null ? addProductPersisRequest.getAnhChiTiet1().getOriginalFilename() : "null",
                 addProductPersisRequest.getAnhChiTiet2() != null ? addProductPersisRequest.getAnhChiTiet2().getOriginalFilename() : "null");
 
 
-
-        boolean isNew=productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isEmpty();
+        boolean isNew = productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isEmpty();
         if (isNew) {
-            if(addProductPersisRequest.getAnhChinh()==null||addProductPersisRequest.getAnhChinh().isEmpty()) {
-                bindingResult.rejectValue("anhChinh","anhChinh.required","Định Treo Đầu Dê Bán Thịt Chó À?");
+            if (addProductPersisRequest.getAnhChinh() == null || addProductPersisRequest.getAnhChinh().isEmpty()) {
+                bindingResult.rejectValue("anhChinh", "anhChinh.required", "Định Treo Đầu Dê Bán Thịt Chó À?");
             }
-            if(addProductPersisRequest.getAnhChiTiet1()==null||addProductPersisRequest.getAnhChiTiet1().isEmpty()) {
-                bindingResult.rejectValue("anhChiTiet1","anhChiTiet1.required","Gán Thêm 1 Ảnh Chi Tiết Đi");
+            if (addProductPersisRequest.getAnhChiTiet1() == null || addProductPersisRequest.getAnhChiTiet1().isEmpty()) {
+                bindingResult.rejectValue("anhChiTiet1", "anhChiTiet1.required", "Gán Thêm 1 Ảnh Chi Tiết Đi");
             }
-            if(addProductPersisRequest.getAnhChiTiet2()==null||addProductPersisRequest.getAnhChiTiet2().isEmpty()) {
-                bindingResult.rejectValue("anhChiTiet2","anhChiTiet2.required","Gán Thêm 1 Ảnh Chi Tiết Đi");
+            if (addProductPersisRequest.getAnhChiTiet2() == null || addProductPersisRequest.getAnhChiTiet2().isEmpty()) {
+                bindingResult.rejectValue("anhChiTiet2", "anhChiTiet2.required", "Gán Thêm 1 Ảnh Chi Tiết Đi");
             }
         }
 
         boolean existsMaSP = productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isPresent();
-        boolean existsSize= sanPhamSizeRepository.findBySanPham_MaSanPhamAndSize(addProductPersisRequest.getMaSanPham().trim(), addProductPersisRequest.getSize()).isPresent();
+        boolean existsSize = sanPhamSizeRepository.findBySanPham_MaSanPhamAndSize(addProductPersisRequest.getMaSanPham().trim(), addProductPersisRequest.getSize()).isPresent();
         if (existsMaSP && existsSize) {
             bindingResult.rejectValue("maSanPham", "duplicate", "Sản Phẩm cùng với size này đã tồn tại");
+        }
+
+        boolean duplicate = productsService.isDuplicateTenSanPhamForCreate(addProductPersisRequest.getTenSanPham().trim());
+
+        if (duplicate) {
+            bindingResult.rejectValue("tenSanPham","duplicate","Tên Sản Phẩm Bị Trùng");
         }
 
         if (bindingResult.hasErrors()) {
@@ -89,18 +96,17 @@ public class AddProductPersisController {
             model.addAttribute("errorMessage", "Bạn cần đăng nhập trước khi thêm sản phẩm");
             return "pages/addProducts";
         }
-        try{
+        try {
             addProductFlow.addProduct(addProductPersisRequest, nguoiCapNhat);
             model.addAttribute("AddProductPersisRequestSuccess", true);
-        }catch(RuntimeException e){
+        } catch (RuntimeException e) {
             log.error("Add product failed", e);
             model.addAttribute("AddProductPersisRequestFailed", true);
-            model.addAttribute("MaSPError","Sản Phẩm Đã Tồn Tại");
+            model.addAttribute("MaSPError", "Sản Phẩm Đã Tồn Tại");
             return "pages/addProducts";
         }
         return "pages/addProducts";
     }
-
 
 
 }

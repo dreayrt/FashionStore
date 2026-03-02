@@ -1,5 +1,6 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class SanPhamSize {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MaSanPham")
+    @JsonIgnore
     private SanPham sanPham;
 
     @Column(name = "Size")

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,6 +50,7 @@ public class ProductsService {
         sp.setGiaSanPham(req.getGiaSanPham());
         sp.setLoai(req.getLoai());
         sp.setMoTa(req.getMoTa());
+        sp.setTrangThai(req.getTrangThai());
         sp.setGioiTinh(req.getGioiTinh());
         sp.setTag(req.getTag());
 //        getOriginalFilename:lay file goc nguoi dung upload len
@@ -65,6 +67,10 @@ public class ProductsService {
         sp.setAnhChiTiet1(detail1);
         sp.setAnhChiTiet2(detail2);
         return sanPhamRepository.save(sp);
+    }
+
+    public boolean isDuplicateTenSanPhamForCreate(String tenSanPham) {
+        return sanPhamRepository.existsByTenSanPham(tenSanPham.trim());
     }
 
 
@@ -89,6 +95,7 @@ public class ProductsService {
         sp.setMoTa(req.getMoTa());
         sp.setGioiTinh(req.getGioiTinh());
         sp.setTag(req.getTag());
+        sp.setTrangThai(req.getTrangThai());
 
         if (req.getAnhChinh() != null && !req.getAnhChinh().isEmpty()) {
             String fileName = saveFile(req.getAnhChinh());
@@ -119,6 +126,13 @@ public class ProductsService {
         sanPhamSizeRepository.save(size);
 
 
+    }
+
+    public boolean isDuplicateTenSanPhamForUpdate(String tenSanPham, String maSanPham) {
+        return sanPhamRepository.existsByTenSanPhamAndMaSanPhamNot(
+                tenSanPham.trim(),
+                maSanPham.trim()
+        );
     }
 
     public String saveFile(MultipartFile file) {
