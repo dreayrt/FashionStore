@@ -74,9 +74,9 @@ public class AuthService {
         taiKhoan.setUsername(registerRequest.getUsername().trim());
         taiKhoan.setPassword(passwordHash);
         taiKhoan.setTrangThai("Offline");
-        taiKhoan.setEmail(registerRequest.getEmail());
+        taiKhoan.setEmail(registerRequest.getEmail().trim());
         taiKhoan.setDiaChi(registerRequest.getAddress());
-        taiKhoan.setPhone(registerRequest.getPhone());
+        taiKhoan.setPhone(registerRequest.getPhone().trim());
 
         String email=registerRequest.getEmail();
         String emailPrefix =email.split("@")[0].toLowerCase();
@@ -88,6 +88,13 @@ public class AuthService {
             taiKhoan.setVaiTro("USER");
         }
         taiKhoanRepository.save(taiKhoan);
+    }
+
+    @Transactional
+    public void registerChooseAvatar(String username,String avatar){
+        TaiKhoan tk=taiKhoanRepository.findByUsername(username).orElseThrow(()->new RuntimeException("Khong Tim Thay Username"));
+        tk.setAvatar(avatar);
+        taiKhoanRepository.save(tk);
     }
 
     public void forgotPassword(String email){

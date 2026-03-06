@@ -2,6 +2,7 @@ package com.dreayrt.fashion_store.Controller;
 
 import com.dreayrt.fashion_store.DTOs.RegisterRequest;
 import com.dreayrt.fashion_store.Service.AuthService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class RegisterController {
     @PostMapping("/pages/register")
     public String register(@Valid @ModelAttribute("RegisterRequest") RegisterRequest registerRequest,
                            BindingResult bindingResult,
+                           HttpSession session,
                            Model model){
         if(bindingResult.hasErrors()){
             return "pages/register";
@@ -32,8 +34,8 @@ public class RegisterController {
         try{
             authService.Register(registerRequest);
             model.addAttribute("RegisterSuccess",true);
-            // Trả về view mà không có dấu "/" đầu để tránh prefix tạo ra "//" và bị StrictHttpFirewall chặn
-            return "pages/register";
+            session.setAttribute("RegisterUsername",registerRequest.getUsername());
+            return "redirect:/pages/chooseAvatar";
         }catch(RuntimeException e) {
             model.addAttribute("RegisterError", e.getMessage());
             return "pages/register";

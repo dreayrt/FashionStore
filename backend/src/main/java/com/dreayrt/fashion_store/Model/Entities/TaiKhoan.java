@@ -26,10 +26,11 @@ public class TaiKhoan {
     @Column(name = "TrangThai")
     private String trangThai;
 
-
-
     @Column(name="Phone")
     private String phone;
+
+    @Column(name ="avatar" )
+    private String Avatar;
 
 
     public TaiKhoan() {}
@@ -87,5 +88,13 @@ public class TaiKhoan {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        Avatar = avatar;
     }
 }

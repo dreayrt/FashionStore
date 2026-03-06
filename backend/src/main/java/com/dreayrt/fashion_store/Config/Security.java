@@ -30,7 +30,9 @@ public class Security {
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/img/**", "/imageProduct/**", "/Logo/**").permitAll()
                         // Trang kho chỉ admin hoặc staff
                         .requestMatchers("/pages/kho").hasAnyRole("ADMIN", "STAFF")
-                        .requestMatchers("/pages/kho/**").hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers("/pages/addProducts").hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers("/pages/deleteProducts").hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers("/pages/updateProducts").hasAnyRole("ADMIN", "STAFF")
                         .anyRequest().permitAll()
                 )
                 .formLogin(login -> login

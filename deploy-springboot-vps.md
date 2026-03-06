@@ -95,11 +95,15 @@ target/your-app.war
 Từ **máy local**:
 
 ```bash
-scp target/your-app.war root@YOUR_SERVER_IP:/root
+scp target/your-app.war root@YOUR_SERVER_IP:/opt/fashionstore
+/opt Là thư mục bạn đang dùng để:
+Chứa file .war
+Chứa file .jar
+Hoặc nơi systemd service chạy app từ đó
 ```
 
 **Cú pháp**:
-
+    
 ```bash
 scp SOURCE USER@IP:DESTINATION
 ```
