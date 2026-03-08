@@ -46,9 +46,9 @@ public class ApiUser {
     @PatchMapping("/avatar")
     public Map<String, String> updateAvatar(@RequestParam("username") String username, @RequestParam("avatar") MultipartFile avatar) throws IOException {
         TaiKhoan tk = taiKhoanRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "username not found"));
-        String filename = avatar.getOriginalFilename();
+        String filename = "avatar-" + System.currentTimeMillis() + ".jpg";
 
-        Path uploadPath = Paths.get("src/main/resources/static/Avatar");
+        Path uploadPath = Paths.get("/opt/fashionstore/avatar");
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

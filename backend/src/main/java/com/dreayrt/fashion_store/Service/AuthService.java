@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.Date;
 
@@ -56,18 +57,21 @@ public class AuthService {
     }
 
     @Transactional
-    public void Register(RegisterRequest registerRequest){
+    public void Register(RegisterRequest registerRequest, BindingResult bindingResult){
         if(taiKhoanRepository.existsByUsername(registerRequest.getUsername())){
-            throw new RuntimeException("Tài Khoản Đã Tồn Tại");
+           bindingResult.rejectValue("username","error.username","Tài Khoản Đã Tồn Tại");
         }
         if(!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())){
-            throw new RuntimeException("Mật Khẩu Không Khớp");
+           bindingResult.rejectValue("confirmPassword","error.confirmPassword", "Mật Khẩu Không Khớp");
         }
         if(taiKhoanRepository.existsByEmail(registerRequest.getEmail())){
-            throw new RuntimeException("Email Này Đã Được Sử Dụng");
+            bindingResult.rejectValue("email", "error.email", "Email Đã Được Sử Dụng");
         }
         if(taiKhoanRepository.existsByPhone(registerRequest.getPhone())){
-            throw new RuntimeException("Số Điện Thoại Này Đã Được Đăng Ký");
+            bindingResult.rejectValue("phone", "error.phone", "Số Điện Thoại Đã Được Đăng Ký");
+        }
+        if(bindingResult.hasErrors()){
+            return;
         }
         String passwordHash=HashUtil.sha256(registerRequest.getPassword());
         TaiKhoan taiKhoan =new TaiKhoan();
