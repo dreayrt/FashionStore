@@ -34,3 +34,6 @@ build/
 
 ### Backend webapp (JSP copied from frontend at build) ###
 backend/src/main/webapp/
+
+### env secrets
+.env
