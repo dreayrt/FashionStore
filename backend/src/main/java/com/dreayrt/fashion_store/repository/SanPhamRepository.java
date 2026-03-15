@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SanPhamRepository extends JpaRepository<SanPham, String> {
+    @EntityGraph(attributePaths ={"sizes","sizes.kho"} )
     List<SanPham> findAll();
     @EntityGraph(attributePaths = {"sizes", "sizes.kho"})
     Optional<SanPham> findById (String id);
