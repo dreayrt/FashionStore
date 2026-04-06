@@ -33,6 +33,8 @@ public class Security {
                         .requestMatchers("/pages/addProducts").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers("/pages/deleteProducts").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers("/pages/updateProducts").hasAnyRole("ADMIN", "STAFF")
+                        //Trang can login
+                        .requestMatchers("/pages/ShoppingCart").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(login -> login

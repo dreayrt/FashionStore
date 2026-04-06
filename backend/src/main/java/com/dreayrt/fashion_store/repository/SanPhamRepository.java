@@ -15,5 +15,5 @@ public interface SanPhamRepository extends JpaRepository<SanPham, String> {
     Optional<SanPham> findById (String id);
     boolean existsByTenSanPham(String tenSanPham);
     boolean existsByTenSanPhamAndMaSanPhamNot(String tenSanPham,String maSanPham);
-
+    Optional<SanPham>getByMaSanPham(String maSanPham);
 }

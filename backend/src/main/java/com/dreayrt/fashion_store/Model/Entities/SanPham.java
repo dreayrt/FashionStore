@@ -42,6 +42,13 @@ public class SanPham {
 
 
 
+    public SanPham() {
+    }
+
+    public SanPham(String maSanPham) {
+        this.maSanPham = maSanPham;
+    }
+
     public String getMaSanPham() {
         return maSanPham;
     }
@@ -132,4 +139,5 @@ public class SanPham {
 
     public List<SanPhamSize> getSizes() { return sizes; }
     public void setSizes(List<SanPhamSize> sizes) { this.sizes = sizes; }
+
 }

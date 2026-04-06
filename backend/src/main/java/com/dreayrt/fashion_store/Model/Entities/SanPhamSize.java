@@ -3,6 +3,8 @@ package com.dreayrt.fashion_store.Model.Entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "SanPhamSize")
 public class SanPhamSize {
@@ -20,6 +22,9 @@ public class SanPhamSize {
 
     @OneToOne(mappedBy = "sanPhamSize", cascade = CascadeType.ALL)
     private Kho kho;
+
+    @OneToMany(mappedBy = "sanPhamSize")
+    private List<ShoppingCartDetail> shoppingCartDetailList;
 
     public Integer getMaSPSize() {
         return maSPSize;
@@ -51,5 +56,13 @@ public class SanPhamSize {
 
     public void setKho(Kho kho) {
         this.kho = kho;
+    }
+
+    public List<ShoppingCartDetail> getShoppingCartDetailList() {
+        return shoppingCartDetailList;
+    }
+
+    public void setShoppingCartDetailList(List<ShoppingCartDetail> shoppingCartDetailList) {
+        this.shoppingCartDetailList = shoppingCartDetailList;
     }
 }
