@@ -3,7 +3,12 @@ package com.dreayrt.fashion_store.api;
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,12 +30,9 @@ public class ApiUser {
     }
 
     @GetMapping
-    public Map<String, String> getTaiKhoan(@RequestParam("username") String username) {
-        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "username not found"));
+    public Map<String, String> getTaiKhoan(Authentication authentication) {
+        TaiKhoan taiKhoan = getCurrentUser(authentication);
 
-//        Dung map de tra ra nhung field can thiet, tranh tra ra cac  nhay cam nhu password,...
-//        ne luon tinh trang infinite loop, khong can dung @JsonIgnore,...
         Map<String, String> response = new HashMap<>();
         response.put("username", taiKhoan.getUsername());
         response.put("email", taiKhoan.getEmail());
@@ -42,10 +44,10 @@ public class ApiUser {
         return response;
     }
 
-
     @PatchMapping("/avatar")
-    public Map<String, String> updateAvatar(@RequestParam("username") String username, @RequestParam("avatar") MultipartFile avatar) throws IOException {
-        TaiKhoan tk = taiKhoanRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "username not found"));
+    public Map<String, String> updateAvatar(Authentication authentication, @RequestParam("avatar") MultipartFile avatar)
+            throws IOException {
+        TaiKhoan tk = getCurrentUser(authentication);
         String filename = "avatar-" + System.currentTimeMillis() + ".jpg";
 
         Path uploadPath = Paths.get("/opt/fashionstore/avatar");
@@ -65,4 +67,12 @@ public class ApiUser {
         return response;
     }
 
+    private TaiKhoan getCurrentUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login required");
+        }
+
+        return taiKhoanRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "username not found"));
+    }
 }

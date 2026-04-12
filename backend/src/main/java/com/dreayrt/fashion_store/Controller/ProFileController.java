@@ -2,8 +2,8 @@ package com.dreayrt.fashion_store.Controller;
 
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
-import jakarta.servlet.http.HttpSession;
 import org.hibernate.annotations.Parameter;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +18,18 @@ public class ProFileController {
     }
 
     @GetMapping("/pages/profile")
-    public String profilePage(@RequestParam("username") String username, HttpSession session, Model model){
-        TaiKhoan sessionUser = (TaiKhoan) session.getAttribute("user");
-        if(sessionUser == null || !sessionUser.getUsername().equals(username)){
-            return "pages/login";
+    public String profilePage(@RequestParam(value = "username", required = false) String username, Authentication authentication, Model model){
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/pages/login";
         }
-        model.addAttribute("user",sessionUser);
+        TaiKhoan currentUser = taiKhoanRepository.findByUsername(authentication.getName()).orElse(null);
+        if (currentUser == null) {
+            return "redirect:/pages/login";
+        }
+        if (username != null && !currentUser.getUsername().equals(username)) {
+            return "redirect:/pages/failed";
+        }
+        model.addAttribute("user",currentUser);
         return "pages/proFile";
     }
 }

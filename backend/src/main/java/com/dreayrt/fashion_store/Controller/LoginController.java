@@ -36,4 +36,8 @@ public class LoginController {
         return "pages/login";
     }
 
+    @GetMapping("/login")
+    public String legacyLoginRedirect() {
+        return "redirect:/pages/login";
+    }
 }

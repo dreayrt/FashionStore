@@ -7,53 +7,49 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.NullSecurityContextRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.dreayrt.fashion_store.Util.HashUtil;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class Security {
     @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
+    private CustomUserDetailService customUserDetailService;
+
     @Autowired
-    private CustomUserDetailService customUserDetailService;   // 🔥 thêm dòng này
+    private JwtFillter jwtFillter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Trang public
-                        .requestMatchers("/pages/login", "/pages/login/**").permitAll()
-                        .requestMatchers("/login", "/logout").permitAll()
-                        .requestMatchers("/static/**", "/css/**", "/js/**", "/img/**", "/imageProduct/**", "/Logo/**").permitAll()
-                        // Trang kho chỉ admin hoặc staff
-                        .requestMatchers("/pages/kho").hasAnyRole("ADMIN", "STAFF")
-                        .requestMatchers("/pages/addProducts").hasAnyRole("ADMIN", "STAFF")
-                        .requestMatchers("/pages/deleteProducts").hasAnyRole("ADMIN", "STAFF")
-                        .requestMatchers("/pages/updateProducts").hasAnyRole("ADMIN", "STAFF")
-                        //Trang can login
-                        .requestMatchers("/pages/ShoppingCart").authenticated()
+
+
+                        .requestMatchers(
+                                "/", "/index",
+                                "/pages/login", "/pages/register",
+                                "/authentication/**",
+                                "/css/**", "/js/**", "/images/**", "/Logo/**", "/imageProduct/**", "/Avatar/**"
+                        ).permitAll()
+
+
+                        .requestMatchers("/pages/addProducts", "/pages/updateProducts", "/pages/deleteProducts", "/pages/kho")
+                        .hasAnyRole("ADMIN", "STAFF")
+
+
+                        .requestMatchers("/pages/profile", "/pages/ShoppingCart", "/pages/logout")
+                        .authenticated()
+
                         .anyRequest().permitAll()
                 )
-                .formLogin(login -> login
-                        .loginPage("/pages/login") // trang form
-                        .loginProcessingUrl("/login") // POST xử lý
-                        .failureUrl("/pages/login?error") // cần slash đầu
-                        // Dùng success handler để set sessionScope.user và quay lại trang đã yêu cầu
-                        .successHandler(loginSuccessHandler)
-                        .permitAll())
-
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/pages/login?logout")
-                )
-                .rememberMe(r -> r
-                        .key("fashion-store-key")
-                        .tokenValiditySeconds(7 * 24 * 60 * 60)
-                )
-                .exceptionHandling(ex -> ex.accessDeniedPage("/pages/failed"))
+                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .securityContext(context -> context.securityContextRepository(new NullSecurityContextRepository()))
+                .addFilterBefore(jwtFillter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable());
 
         return http.build();
