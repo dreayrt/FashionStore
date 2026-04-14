@@ -13,7 +13,9 @@ public class JwtUtil {
     private final String SECRET="dreayrt-individual-project-project-individual-dreayrt";
     private final long EXPIRATION_TIME=30 * 60 * 1000;
     private final long REFRESH_TIME_TOKEN=7L * 24 * 60 * 60 * 1000 ;
-    public String generateAccessToken(String username,String role){
+    public String generateAccessToken(String username,String role) {
+
+
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())

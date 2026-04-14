@@ -31,6 +31,7 @@ public class ApiAuthentication {
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody LoginRequest request) {
+        System.out.println("Remember: " + request.getRemember());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

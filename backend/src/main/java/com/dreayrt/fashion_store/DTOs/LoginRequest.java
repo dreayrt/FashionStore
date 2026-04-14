@@ -7,7 +7,7 @@ public class LoginRequest {
     private String username;
     @NotBlank(message = "Password không được để trống")
     private String password;
-    private Boolean Remember;
+    private Boolean remember;
 
     public String getUsername() {
         return username;
@@ -26,10 +26,10 @@ public class LoginRequest {
     }
 
     public Boolean getRemember() {
-        return Remember;
+        return remember;
     }
 
     public void setRemember(Boolean remember) {
-        Remember = remember;
+        this.remember = remember;
     }
 }

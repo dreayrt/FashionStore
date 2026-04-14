@@ -47,6 +47,11 @@ public class Security {
 
                         .anyRequest().permitAll()
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/pages/login");
+                        })
+                )
                 .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .securityContext(context -> context.securityContextRepository(new NullSecurityContextRepository()))
                 .addFilterBefore(jwtFillter, UsernamePasswordAuthenticationFilter.class)
