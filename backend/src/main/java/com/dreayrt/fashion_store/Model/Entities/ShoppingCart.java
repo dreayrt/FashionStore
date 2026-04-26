@@ -12,7 +12,7 @@ public class ShoppingCart {
     @Column(name = "MaGioHang")
     private Integer maGioHang;
     @OneToOne
-    @JoinColumn(name ="UserName")
+    @JoinColumn(name ="UserName", unique = true)
     private TaiKhoan taikhoan;
 
     @OneToMany(mappedBy = "shoppingCart")

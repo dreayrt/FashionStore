@@ -26,6 +26,12 @@ public class SanPhamSize {
     @OneToMany(mappedBy = "sanPhamSize")
     private List<ShoppingCartDetail> shoppingCartDetailList;
 
+    @OneToOne(mappedBy = "sanPhamSize")
+    private DisplayItem displayItem;
+
+    @OneToMany(mappedBy = "sanPhamSize")
+    private List<OrderDetail> orderDetailList;
+
     public Integer getMaSPSize() {
         return maSPSize;
     }
@@ -64,5 +70,21 @@ public class SanPhamSize {
 
     public void setShoppingCartDetailList(List<ShoppingCartDetail> shoppingCartDetailList) {
         this.shoppingCartDetailList = shoppingCartDetailList;
+    }
+
+    public DisplayItem getDisplayItem() {
+        return displayItem;
+    }
+
+    public void setDisplayItem(DisplayItem displayItem) {
+        this.displayItem = displayItem;
+    }
+
+    public List<OrderDetail> getOrderDetailList() {
+        return orderDetailList;
+    }
+
+    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+        this.orderDetailList = orderDetailList;
     }
 }

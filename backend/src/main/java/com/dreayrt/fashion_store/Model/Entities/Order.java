@@ -1,0 +1,118 @@
+package com.dreayrt.fashion_store.Model.Entities;
+
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Table(name = "DonHang")
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaDonHang")
+    private Integer maDonHang;
+
+    @Column(name = "NgayDat")
+    private Date ngayDat;
+    @Column(name = "TongTien")
+    private BigDecimal tongTien;
+    @Column(name = "PhuongThucThanhToan")
+    private String phuongThucThanhToan;
+    @Column(name = "TrangThai")
+    private String trangThai;
+    @Column(name = "TenNguoiNhan")
+    private String tenNguoiNhan;
+    @Column(name = "SoDienThoai")
+    private String soDienThoai;
+    @Column(name = "DiaChi")
+    private String diaChi;
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private TaiKhoan taiKhoan;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail;
+
+
+    public Integer getMaDonHang() {
+        return maDonHang;
+    }
+
+    public void setMaDonHang(Integer maDonHang) {
+        this.maDonHang = maDonHang;
+    }
+
+    public Date getNgayDat() {
+        return ngayDat;
+    }
+
+    public void setNgayDat(Date ngayDat) {
+        this.ngayDat = ngayDat;
+    }
+
+    public BigDecimal getTongTien() {
+        return tongTien;
+    }
+
+    public void setTongTien(BigDecimal tongTien) {
+        this.tongTien = tongTien;
+    }
+
+    public String getPhuongThucThanhToan() {
+        return phuongThucThanhToan;
+    }
+
+    public void setPhuongThucThanhToan(String phuongThucThanhToan) {
+        this.phuongThucThanhToan = phuongThucThanhToan;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public String getTenNguoiNhan() {
+        return tenNguoiNhan;
+    }
+
+    public void setTenNguoiNhan(String tenNguoiNhan) {
+        this.tenNguoiNhan = tenNguoiNhan;
+    }
+
+    public String getSoDienThoai() {
+        return soDienThoai;
+    }
+
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
+    }
+
+    public String getDiaChi() {
+        return diaChi;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
+
+    public TaiKhoan getTaiKhoan() {
+        return taiKhoan;
+    }
+
+    public void setTaiKhoan(TaiKhoan taiKhoan) {
+        this.taiKhoan = taiKhoan;
+    }
+
+    public List<OrderDetail> getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(List<OrderDetail> orderDetail) {
+        this.orderDetail = orderDetail;
+    }
+}

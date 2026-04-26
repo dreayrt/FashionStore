@@ -42,6 +42,7 @@ public class SanPham {
 
 
 
+
     public SanPham() {
     }
 
@@ -89,6 +90,14 @@ public class SanPham {
         this.trangThai = trangThai;
     }
 
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
     public String getTag() {
         return tag;
     }
@@ -105,28 +114,12 @@ public class SanPham {
         this.gioiTinh = gioiTinh;
     }
 
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
-
     public String getAnhChinh() {
         return anhChinh;
     }
 
     public void setAnhChinh(String anhChinh) {
         this.anhChinh = anhChinh;
-    }
-
-    public String getAnhChiTiet2() {
-        return anhChiTiet2;
-    }
-
-    public void setAnhChiTiet2(String anhChiTiet2) {
-        this.anhChiTiet2 = anhChiTiet2;
     }
 
     public String getAnhChiTiet1() {
@@ -137,7 +130,20 @@ public class SanPham {
         this.anhChiTiet1 = anhChiTiet1;
     }
 
-    public List<SanPhamSize> getSizes() { return sizes; }
-    public void setSizes(List<SanPhamSize> sizes) { this.sizes = sizes; }
+    public String getAnhChiTiet2() {
+        return anhChiTiet2;
+    }
+
+    public void setAnhChiTiet2(String anhChiTiet2) {
+        this.anhChiTiet2 = anhChiTiet2;
+    }
+
+    public List<SanPhamSize> getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(List<SanPhamSize> sizes) {
+        this.sizes = sizes;
+    }
 
 }

@@ -12,7 +12,7 @@ public class ShoppingCartDetail {
     @Column(name = "SoLuong")
     private Integer soLuong;
     @ManyToOne()
-    @JoinColumn(name ="maGioHang")
+    @JoinColumn(name ="MaGioHang")
     private ShoppingCart shoppingCart;
     @ManyToOne()
     @JoinColumn(name = "MaSPSize")

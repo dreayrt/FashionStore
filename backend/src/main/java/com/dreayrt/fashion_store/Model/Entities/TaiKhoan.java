@@ -32,6 +32,13 @@ public class TaiKhoan {
     @Column(name ="avatar" )
     private String Avatar;
 
+    @OneToOne(mappedBy = "taikhoan")
+    private ShoppingCart shoppingCart;
+
+    @OneToMany(mappedBy ="taiKhoan" )
+    private List<Order>orders ;
+
+
 
     public TaiKhoan() {}
 
@@ -96,5 +103,21 @@ public class TaiKhoan {
 
     public void setAvatar(String avatar) {
         Avatar = avatar;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

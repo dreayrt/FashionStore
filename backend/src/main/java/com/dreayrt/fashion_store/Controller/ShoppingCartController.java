@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
-public class ShoppingCart {
+public class ShoppingCartController {
     @Autowired
     private ShoppingCartDetailRepository shoppingCartDetailRepository;
 
@@ -28,7 +28,6 @@ public class ShoppingCart {
         String username = auth.getName();
         List<ShoppingCartDetail> items =
                 shoppingCartDetailRepository.findByShoppingCart_Taikhoan_Username(username);
-        System.out.println("ITEM SIZE: " + items.size());
         model.addAttribute("items", items);
         return "pages/ShoppingCart";
     }
