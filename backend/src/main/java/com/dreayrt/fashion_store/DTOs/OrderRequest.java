@@ -15,7 +15,7 @@ public class OrderRequest {
     @Size(max = 255, message = "Địa Chỉ Quá Dài")
     private String recipientAddress;
     @NotBlank()
-    @Pattern(regexp = "COD|MOMO|BANK", message = "Phương Thức Không Hợp Lệ")
+    @Pattern(regexp = "COD|SEPAY|BANK", message = "Phương Thức Không Hợp Lệ")
     private String paymentMethod;
 
     public String getRecipientName() {

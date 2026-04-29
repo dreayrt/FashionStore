@@ -1,12 +1,14 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "Kho")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Kho {
     @Id
     @Column(name = "MaSPSize")

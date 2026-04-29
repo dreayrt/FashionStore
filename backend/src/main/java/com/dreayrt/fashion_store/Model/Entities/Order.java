@@ -1,5 +1,7 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -8,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "DonHang")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +31,14 @@ public class Order {
     private String soDienThoai;
     @Column(name = "DiaChi")
     private String diaChi;
-    @ManyToOne
+    @Column(name = "DaThanhToan")
+    private Boolean daThanhToan;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
     private TaiKhoan taiKhoan;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetail;
 
 
@@ -100,6 +106,14 @@ public class Order {
         this.diaChi = diaChi;
     }
 
+    public Boolean getDaThanhToan() {
+        return daThanhToan;
+    }
+
+    public void setDaThanhToan(Boolean daThanhToan) {
+        this.daThanhToan = daThanhToan;
+    }
+
     public TaiKhoan getTaiKhoan() {
         return taiKhoan;
     }
@@ -107,6 +121,7 @@ public class Order {
     public void setTaiKhoan(TaiKhoan taiKhoan) {
         this.taiKhoan = taiKhoan;
     }
+
 
     public List<OrderDetail> getOrderDetail() {
         return orderDetail;

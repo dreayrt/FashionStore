@@ -1,12 +1,14 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "SanPhamSize")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SanPhamSize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,22 +16,23 @@ public class SanPhamSize {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MaSanPham")
-    @JsonIgnore
     private SanPham sanPham;
 
     @Column(name = "Size")
     private String size;
 
-    @OneToOne(mappedBy = "sanPhamSize", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "sanPhamSize", cascade = CascadeType.ALL,fetch =  FetchType.LAZY)
     private Kho kho;
 
-    @OneToMany(mappedBy = "sanPhamSize")
+    @JsonIgnore
+    @OneToMany(mappedBy = "sanPhamSize",fetch =  FetchType.LAZY)
     private List<ShoppingCartDetail> shoppingCartDetailList;
 
     @OneToOne(mappedBy = "sanPhamSize")
     private DisplayItem displayItem;
 
-    @OneToMany(mappedBy = "sanPhamSize")
+    @JsonIgnore
+    @OneToMany(mappedBy = "sanPhamSize", fetch =  FetchType.LAZY)
     private List<OrderDetail> orderDetailList;
 
     public Integer getMaSPSize() {

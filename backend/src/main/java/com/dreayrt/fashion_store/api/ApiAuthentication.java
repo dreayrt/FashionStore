@@ -44,6 +44,7 @@ public class ApiAuthentication {
         String accessToken = jwtUtil.generateAccessToken(request.getUsername(), role);
         Map<String, String> response = new HashMap<>();
         response.put("accessToken", accessToken);
+        response.put("role", role);
         if (Boolean.TRUE.equals(request.getRemember())) {
             String refreshToken = jwtUtil.generateRefreshToken(request.getUsername());
             response.put("refreshToken", refreshToken);

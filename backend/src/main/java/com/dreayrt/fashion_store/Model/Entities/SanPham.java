@@ -1,5 +1,7 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -7,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "SanPham")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SanPham {
     @Id
     @Column(name="MaSanPham")
@@ -37,7 +40,8 @@ public class SanPham {
     @Column(name="AnhChiTiet2")
     private String anhChiTiet2;
 
-    @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
     private List<SanPhamSize> sizes;
 
 

@@ -11,10 +11,10 @@ public class ShoppingCartDetail {
     private Integer id;
     @Column(name = "SoLuong")
     private Integer soLuong;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="MaGioHang")
     private ShoppingCart shoppingCart;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MaSPSize")
     private SanPhamSize sanPhamSize;
 

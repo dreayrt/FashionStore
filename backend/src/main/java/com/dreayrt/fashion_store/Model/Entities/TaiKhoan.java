@@ -1,5 +1,6 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -32,10 +33,11 @@ public class TaiKhoan {
     @Column(name ="avatar" )
     private String Avatar;
 
-    @OneToOne(mappedBy = "taikhoan")
+    @OneToOne(mappedBy = "taikhoan",fetch =  FetchType.LAZY)
     private ShoppingCart shoppingCart;
 
-    @OneToMany(mappedBy ="taiKhoan" )
+    @JsonIgnore
+    @OneToMany(mappedBy ="taiKhoan" ,fetch =  FetchType.LAZY)
     private List<Order>orders ;
 
 

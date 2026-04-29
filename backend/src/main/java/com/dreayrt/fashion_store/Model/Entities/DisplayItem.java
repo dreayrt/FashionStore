@@ -1,5 +1,7 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -7,6 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "HangTrungBay")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DisplayItem {
     @Id
     @Column(name = "MaSPSize")
@@ -17,7 +20,8 @@ public class DisplayItem {
     private BigDecimal giaBan;
     @Column(name = "NgayTrungBay")
     private Date ngayTrungBay;
-    @OneToOne
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "MaSPSize")
     private SanPhamSize sanPhamSize;

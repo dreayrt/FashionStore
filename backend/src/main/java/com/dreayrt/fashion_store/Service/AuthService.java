@@ -7,7 +7,6 @@ import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import com.dreayrt.fashion_store.Util.OTPUtil;
 import com.dreayrt.fashion_store.repository.OtpLogRepository;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,39 +21,7 @@ public class AuthService {
     @Autowired
     private EmailService emailService;
     @Autowired
-    private HttpSession session;
-    @Autowired
     private OtpLogRepository otpLogRepository;
-
-    @Transactional
-    public TaiKhoan Login(String username, String password) {
-        String normalizedUsername = username == null ? "" : username.trim();
-        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(normalizedUsername)
-                .filter(t -> t.getUsername() != null && t.getUsername().trim().equals(normalizedUsername))
-                .orElseThrow(() -> new RuntimeException("Tài Khoản không tồn tại"));
-        if("Locked".equals(taiKhoan.getTrangThai())){
-            throw new RuntimeException("Tài Khoản Đang Bị Khóa");
-        }
-        String passWordHash= HashUtil.sha256(password);
-
-        if(!passWordHash.equals(taiKhoan.getPassword())){
-            throw new RuntimeException("Sai Mật Khẩu");
-        }
-        taiKhoan.setTrangThai("Online");
-        taiKhoanRepository.save(taiKhoan);
-        return taiKhoan;
-    }
-    @Transactional
-    public void Logout(String username){
-        String normalizedUsername = username == null ? "" : username.trim();
-        taiKhoanRepository.findByUsername(normalizedUsername)
-                .filter(t -> t.getUsername() != null && t.getUsername().trim().equals(normalizedUsername))
-                .filter(t -> !"Locked".equals(t.getTrangThai()))
-                .ifPresent(t -> {
-                    t.setTrangThai("Offline");
-                    taiKhoanRepository.save(t);
-                });
-    }
 
     @Transactional
     public void Register(RegisterRequest registerRequest, BindingResult bindingResult){

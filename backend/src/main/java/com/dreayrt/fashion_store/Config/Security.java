@@ -79,7 +79,7 @@ public class Security {
                         ).permitAll()
                         .requestMatchers("/pages/addProducts", "/pages/updateProducts", "/pages/deleteProducts", "/pages/kho")
                         .hasAnyRole("ADMIN", "STAFF")
-                        .requestMatchers("/pages/profile", "/pages/ShoppingCart", "/pages/logout")
+                        .requestMatchers("/pages/profile", "/pages/order", "/pages/ShoppingCart", "/pages/logout")
                         .authenticated()
                         .anyRequest().permitAll()
                 )

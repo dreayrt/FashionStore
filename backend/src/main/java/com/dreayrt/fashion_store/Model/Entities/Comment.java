@@ -17,10 +17,10 @@ public class Comment {
     private Date NgayBinhLuan;
     @Column(name ="DanhGia" )
     private int DanhGia;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserName")
     private TaiKhoan user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MaSanPham")
     private SanPham sanPham;
 

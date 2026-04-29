@@ -1,5 +1,6 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaGioHang")
     private Integer maGioHang;
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name ="UserName", unique = true)
     private TaiKhoan taikhoan;

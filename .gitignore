@@ -1,4 +1,4 @@
-HELP.md
+document/HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -38,3 +38,4 @@ backend/src/main/webapp/
 ### env secrets
 .env
 /.claude
+/document
