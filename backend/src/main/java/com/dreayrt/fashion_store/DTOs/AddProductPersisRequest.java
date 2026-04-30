@@ -34,6 +34,10 @@ public class AddProductPersisRequest {
     private MultipartFile anhChinh;
     private MultipartFile anhChiTiet1;
     private MultipartFile anhChiTiet2;
+    private String anhChinhName;
+    private String anhChiTiet1Name;
+    private String anhChiTiet2Name;
+
 
     public String getMaSanPham() {
         return maSanPham;
@@ -91,20 +95,20 @@ public class AddProductPersisRequest {
         this.loai = loai;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public String getMoTa() {
         return moTa;
     }
 
     public void setMoTa(String moTa) {
         this.moTa = moTa;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public Integer getGioiTinh() {
@@ -137,5 +141,29 @@ public class AddProductPersisRequest {
 
     public void setAnhChiTiet2(MultipartFile anhChiTiet2) {
         this.anhChiTiet2 = anhChiTiet2;
+    }
+
+    public String getAnhChinhName() {
+        return anhChinhName;
+    }
+
+    public void setAnhChinhName(String anhChinhName) {
+        this.anhChinhName = anhChinhName;
+    }
+
+    public String getAnhChiTiet1Name() {
+        return anhChiTiet1Name;
+    }
+
+    public void setAnhChiTiet1Name(String anhChiTiet1Name) {
+        this.anhChiTiet1Name = anhChiTiet1Name;
+    }
+
+    public String getAnhChiTiet2Name() {
+        return anhChiTiet2Name;
+    }
+
+    public void setAnhChiTiet2Name(String anhChiTiet2Name) {
+        this.anhChiTiet2Name = anhChiTiet2Name;
     }
 }

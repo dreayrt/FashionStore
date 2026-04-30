@@ -1,7 +1,10 @@
 package com.dreayrt.fashion_store.api;
 
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
+import com.dreayrt.fashion_store.Service.R2Service;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/user")
@@ -28,6 +32,9 @@ public class ApiUser {
     public ApiUser(TaiKhoanRepository taiKhoanRepository) {
         this.taiKhoanRepository = taiKhoanRepository;
     }
+
+    @Autowired
+    private R2Service  r2Service;
 
     @GetMapping
     public Map<String, String> getTaiKhoan(Authentication authentication) {
@@ -44,27 +51,41 @@ public class ApiUser {
         return response;
     }
 
+    @Value("${app.r2.public-url}")
+    private String r2PublicUrl;
+
     @PatchMapping("/avatar")
-    public Map<String, String> updateAvatar(Authentication authentication, @RequestParam("avatar") MultipartFile avatar)
-            throws IOException {
+    public Map<String, String> updateAvatar(Authentication authentication,
+                                            @RequestParam("avatar") MultipartFile avatar) {
         TaiKhoan tk = getCurrentUser(authentication);
-        String filename = "avatar-" + System.currentTimeMillis() + ".jpg";
 
-        Path uploadPath = Paths.get("/opt/fashionstore/avatar");
+        try {
+            // validate nhanh
+            if (avatar.isEmpty() || !avatar.getContentType().startsWith("image/")) {
+                throw new RuntimeException("File không hợp lệ");
+            }
 
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+            // tạo tên file
+            String ext = avatar.getOriginalFilename()
+                    .substring(avatar.getOriginalFilename().lastIndexOf("."));
+            String fileName = UUID.randomUUID() + ext;
+
+            String key = "avatar/" + fileName;
+
+            // upload lên R2
+            r2Service.uploadFile(key, avatar);
+
+            // lưu URL public
+            String avatarUrl = r2PublicUrl + "/" + key;
+
+            tk.setAvatar(avatarUrl);
+            taiKhoanRepository.save(tk);
+
+            return Map.of("avatar", avatarUrl);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Upload avatar lỗi", e);
         }
-
-        Path filePath = uploadPath.resolve(filename);
-
-        Files.copy(avatar.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        tk.setAvatar("/Avatar/" + filename);
-        taiKhoanRepository.save(tk);
-        Map<String, String> response = new HashMap<>();
-        response.put("avatar", tk.getAvatar());
-        return response;
     }
 
     private TaiKhoan getCurrentUser(Authentication authentication) {

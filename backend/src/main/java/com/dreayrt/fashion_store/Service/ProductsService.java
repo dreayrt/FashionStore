@@ -28,6 +28,9 @@ public class ProductsService {
     @Autowired
     private SanPhamSizeRepository sanPhamSizeRepository;
 
+    @Autowired
+    private R2Service r2Service;
+
     public List<SanPham> GetSanPhamList() {
         return sanPhamRepository.findAll();
     }
@@ -53,15 +56,16 @@ public class ProductsService {
         sp.setTrangThai(req.getTrangThai());
         sp.setGioiTinh(req.getGioiTinh());
         sp.setTag(req.getTag());
-//        getOriginalFilename:lay file goc nguoi dung upload len
         String mainName = (req.getAnhChinh() != null && !req.getAnhChinh().isEmpty())
-                ? req.getAnhChinh().getOriginalFilename()
+                ? uploadImage(req.getAnhChinh())
                 : null;
+
         String detail1 = (req.getAnhChiTiet1() != null && !req.getAnhChiTiet1().isEmpty())
-                ? req.getAnhChiTiet1().getOriginalFilename()
+                ? uploadImage(req.getAnhChiTiet1())
                 : null;
+
         String detail2 = (req.getAnhChiTiet2() != null && !req.getAnhChiTiet2().isEmpty())
-                ? req.getAnhChiTiet2().getOriginalFilename()
+                ? uploadImage(req.getAnhChiTiet2())
                 : null;
         sp.setAnhChinh(mainName);
         sp.setAnhChiTiet1(detail1);
@@ -98,19 +102,19 @@ public class ProductsService {
         sp.setTrangThai(req.getTrangThai());
 
         if (req.getAnhChinh() != null && !req.getAnhChinh().isEmpty()) {
-            String fileName = saveFile(req.getAnhChinh());
+            String fileName = uploadImage(req.getAnhChinh());
             sp.setAnhChinh(fileName);
         } else {
             sp.setAnhChinh(req.getOldAnhChinh());
         }
         if (req.getAnhChiTiet1() != null && !req.getAnhChiTiet1().isEmpty()) {
-            String fileName = saveFile(req.getAnhChiTiet1());
+            String fileName = uploadImage(req.getAnhChiTiet1());
             sp.setAnhChiTiet1(fileName);
         } else {
             sp.setAnhChiTiet1(req.getOldAnhChiTiet1());
         }
         if (req.getAnhChiTiet2() != null && !req.getAnhChiTiet2().isEmpty()) {
-            String fileName = saveFile(req.getAnhChiTiet2());
+            String fileName = uploadImage(req.getAnhChiTiet2());
             sp.setAnhChiTiet2(fileName);
         } else {
             sp.setAnhChiTiet2(req.getOldAnhChiTiet2());
@@ -135,17 +139,6 @@ public class ProductsService {
         );
     }
 
-    public String saveFile(MultipartFile file) {
-        try {
-            String uploadDir = "/frontend/public/imageProduct/";
-            String fileName = file.getOriginalFilename();
-            Path path = Paths.get(uploadDir + fileName);
-            Files.copy(file.getInputStream(), path);
-            return fileName;
-        } catch (Exception e) {
-            throw new RuntimeException("Lỗi lưu file", e);
-        }
-    }
 
     @Transactional
     public void deleteSanPham(String masp, String size) {
@@ -153,6 +146,18 @@ public class ProductsService {
         sanPhamSizeRepository.delete(spSize);
     }
 
+    private String uploadImage(MultipartFile file) {
+        try {
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String key = "imageProduct/" + fileName;
+
+            r2Service.uploadFile(key, file);
+
+            return fileName;
+        } catch (Exception e) {
+            throw new RuntimeException("Upload R2 lỗi", e);
+        }
+    }
 }
 
 

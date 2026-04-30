@@ -46,17 +46,6 @@ public class AddProductPersisController {
             BindingResult bindingResult,
             Model model,
             Authentication authentication) {
-        log.info("POST /pages/addProducts: maSP={}, size={}, gia={}, soLuong={}, loai={}, gioiTinh={},trangThai={} ,files=[main:{}, d1:{}, d2:{}] ",
-                addProductPersisRequest.getMaSanPham(),
-                addProductPersisRequest.getSize(),
-                addProductPersisRequest.getGiaSanPham(),
-                addProductPersisRequest.getSoLuong(),
-                addProductPersisRequest.getLoai(),
-                addProductPersisRequest.getGioiTinh(),
-                addProductPersisRequest.getTrangThai(),
-                addProductPersisRequest.getAnhChinh() != null ? addProductPersisRequest.getAnhChinh().getOriginalFilename() : "null",
-                addProductPersisRequest.getAnhChiTiet1() != null ? addProductPersisRequest.getAnhChiTiet1().getOriginalFilename() : "null",
-                addProductPersisRequest.getAnhChiTiet2() != null ? addProductPersisRequest.getAnhChiTiet2().getOriginalFilename() : "null");
 
         boolean isNew = productsService.findByMaSanPham(addProductPersisRequest.getMaSanPham().trim()).isEmpty();
         if (isNew) {

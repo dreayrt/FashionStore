@@ -9,6 +9,7 @@ import com.dreayrt.fashion_store.Service.PersistenceService;
 import com.dreayrt.fashion_store.Service.ProductsService;
 import com.dreayrt.fashion_store.repository.SanPhamSizeRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class UpdateProductPersisController {
         this.sanPhamSizeRepository = sanPhamSizeRepository;
     }
 
+
     @GetMapping("/pages/updateProducts")
     public String reLoadDataUpdateProductPersis(Model model){
         List<SanPham> lstSanPham = productsService.GetSanPhamList();
@@ -50,6 +52,7 @@ public class UpdateProductPersisController {
         model.addAttribute("lstSanPham", productsService.GetSanPhamList());
         model.addAttribute("lstKho", persistenceService.getSanPhamKhoList());
         model.addAttribute("lstSize", sanPhamSizeRepository.findAll());
+
         boolean duplicated = productsService.isDuplicateTenSanPhamForUpdate(
                 req.getTenSanPham(),
                 req.getMaSanPham()

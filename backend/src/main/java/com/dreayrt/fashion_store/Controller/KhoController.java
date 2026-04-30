@@ -1,5 +1,6 @@
 package com.dreayrt.fashion_store.Controller;
 
+import com.dreayrt.fashion_store.DTOs.SanPhamKhoGroupDTO;
 import com.dreayrt.fashion_store.Service.PersistenceService;
 import com.dreayrt.fashion_store.Service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class KhoController {
     @Autowired
     private PersistenceService persistenceService;
-@GetMapping("/pages/kho")
-public String kho(Model model){
-    model.addAttribute("ListSanPhamKho",persistenceService.getSanPhamKhoList());
-    return "pages/kho";
-}
+
+    @GetMapping("/pages/kho")
+    public String kho(Model model){
+        model.addAttribute("ListSanPhamKho", persistenceService.getSanPhamKhoGroupedList());
+        return "pages/kho";
+    }
 }
