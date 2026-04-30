@@ -2,6 +2,7 @@ package com.dreayrt.fashion_store.Model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.apache.catalina.User;
 
 import java.util.List;
 
@@ -39,6 +40,21 @@ public class TaiKhoan {
     @JsonIgnore
     @OneToMany(mappedBy ="taiKhoan" ,fetch =  FetchType.LAZY)
     private List<Order>orders ;
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",fetch =   FetchType.LAZY)
+    private List<Conversation> conversationsUser;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "staff",fetch =  FetchType.LAZY)
+    private List<Conversation> conversationsStaff;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "sender",fetch =  FetchType.LAZY)
+    private List<Message> messages;
+
+
 
 
 
@@ -121,5 +137,21 @@ public class TaiKhoan {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public List<Conversation> getConversationsUser() {
+        return conversationsUser;
+    }
+
+    public void setConversationsUser(List<Conversation> conversationsUser) {
+        this.conversationsUser = conversationsUser;
+    }
+
+    public List<Conversation> getConversationsStaff() {
+        return conversationsStaff;
+    }
+
+    public void setConversationsStaff(List<Conversation> conversationsStaff) {
+        this.conversationsStaff = conversationsStaff;
     }
 }

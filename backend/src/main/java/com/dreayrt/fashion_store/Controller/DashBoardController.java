@@ -46,4 +46,9 @@ public class DashBoardController {
         
         return "dashboard/staff";
     }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "dashboard/admin";
+    }
 }
