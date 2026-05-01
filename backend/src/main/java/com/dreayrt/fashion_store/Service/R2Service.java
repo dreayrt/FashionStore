@@ -25,26 +25,33 @@ public class R2Service {
             @Value("${r2.access-key}") String accessKey,
             @Value("${r2.secret-key}") String secretKey
     ) {
-        this.s3 = S3Client.builder()
-                .endpointOverride(URI.create(endpoint))
-                .region(Region.of("auto"))
+        this.s3 = S3Client.builder() //tao client de giao tiep voi storage(cloudflare r2)
+                .endpointOverride(URI.create(endpoint))//S3 client goi den r2 endpoint
+                .region(Region.of("auto"))//AWS bat buoc phai co region nhung R2 khong dung region that nen set auto
+                //gắn Access Key + Secret Key để xác thực
                 .credentialsProvider(
                         StaticCredentialsProvider.create(
                                 AwsBasicCredentials.create(accessKey, secretKey)
                         )
                 )
-                .build();
+                .build();//build ra object `S3Client`
+
     }
 
-    // 🔥 METHOD BẠN ĐANG THIẾU
-    public void uploadFile(String key, MultipartFile file) throws Exception {
+    //key: duong dan file trong bucket
+    //file: file upload tu client
+    public void uploadFile(String key , MultipartFile file) throws Exception {
+        //Gửi request upload file
+        //Thực chất là:
+        //```http
+        //PUT /bucket/key
         s3.putObject(
-                PutObjectRequest.builder()
+                PutObjectRequest.builder()//tạo “nội dung request” (request config) //header
                         .bucket(bucketName)
                         .key(key)
-                        .contentType(file.getContentType())
-                        .build(),
-                RequestBody.fromInputStream(file.getInputStream(), file.getSize())
+                        .contentType(file.getContentType())// metadata(thong tin di kem)
+                        .build(),//hoàn thành request config
+                RequestBody.fromInputStream(file.getInputStream(), file.getSize())//Biến file của bạn thành dữ liệu (body) để gửi đi trong HTTP request  //body
         );
     }
 }

@@ -33,6 +33,9 @@ public class Order {
     private String diaChi;
     @Column(name = "DaThanhToan")
     private Boolean daThanhToan;
+
+    @Column(name = "NgayGiaoHang")
+    private Date ngayGiaoHang;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
@@ -112,6 +115,14 @@ public class Order {
 
     public void setDaThanhToan(Boolean daThanhToan) {
         this.daThanhToan = daThanhToan;
+    }
+
+    public Date getNgayGiaoHang() {
+        return ngayGiaoHang;
+    }
+
+    public void setNgayGiaoHang(Date ngayGiaoHang) {
+        this.ngayGiaoHang = ngayGiaoHang;
     }
 
     public TaiKhoan getTaiKhoan() {

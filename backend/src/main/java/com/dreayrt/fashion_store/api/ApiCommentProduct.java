@@ -3,6 +3,7 @@ package com.dreayrt.fashion_store.api;
 import com.dreayrt.fashion_store.DTOs.CommentRequest;
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import com.dreayrt.fashion_store.Service.UserService;
+import com.dreayrt.fashion_store.repository.OrderRepository;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,12 @@ import java.util.Map;
 public class ApiCommentProduct {
     private final UserService userService;
     private final TaiKhoanRepository taiKhoanRepository;
+    private final OrderRepository orderRepository;
 
-    public ApiCommentProduct(UserService userService, TaiKhoanRepository taiKhoanRepository) {
+    public ApiCommentProduct(UserService userService, TaiKhoanRepository taiKhoanRepository, OrderRepository orderRepository) {
         this.userService = userService;
         this.taiKhoanRepository = taiKhoanRepository;
+        this.orderRepository = orderRepository;
     }
 
     @PostMapping()
@@ -59,10 +62,27 @@ public class ApiCommentProduct {
         TaiKhoan tk = taiKhoanRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Ban chua dang nhap"));
 
+        // Kiểm tra xem người dùng đã mua sản phẩm này và đơn hàng đã hoàn thành chưa
+        boolean hasBought = orderRepository.existsByTaiKhoan_UsernameAndTrangThaiAndOrderDetail_SanPhamSize_SanPham_MaSanPham(
+                tk.getUsername(), "Hoàn thành", commentRequest.getMaSanPham()
+        );
+
+        if (!hasBought) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("message", "Bạn chỉ có thể đánh giá sản phẩm sau khi đã mua và đơn hàng được hoàn thành.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+        }
+
         userService.createComment(commentRequest, tk.getUsername());
+
+        // Lấy lại avatar mới nhất từ DB để tránh cache
+        String currentAvatar = taiKhoanRepository.findByUsername(tk.getUsername())
+                .map(TaiKhoan::getAvatar)
+                .orElse(null);
 
         Map<String, Object> response = new HashMap<>();
         response.put("username", tk.getUsername());
+        response.put("avatar", currentAvatar);
         response.put("noiDung", commentRequest.getNoiDung());
         response.put("rating", commentRequest.getRating());
         response.put("maSanPham", commentRequest.getMaSanPham());

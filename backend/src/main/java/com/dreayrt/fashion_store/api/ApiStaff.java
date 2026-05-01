@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,6 +32,7 @@ public class ApiStaff {
     public ResponseEntity<?> shipOrder(@PathVariable("id") Integer id){
         Order order= orderRepository.findById(id).orElseThrow(()->new RuntimeException("Order not found"));
         order.setTrangThai("Đang Giao");
+        order.setNgayGiaoHang(new Date());
         orderRepository.save(order);
         return ResponseEntity.ok("OK");
     }

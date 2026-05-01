@@ -45,6 +45,7 @@ public class ChatService {
             msgResponse.setSender(msg.getSender().getUsername());
             msgResponse.setContent(msg.getContent());
             msgResponse.setCreatedAt(msg.getCreatedAt());
+            msgResponse.setConversationId(conversationId);
             return msgResponse;
         }).toList();
     }
@@ -73,6 +74,7 @@ public class ChatService {
         res.setSender(sender.getUsername());
         res.setContent(msg.getContent());
         res.setCreatedAt(msg.getCreatedAt());
+        res.setConversationId(conversation.getId());
 
         return res;
     }
@@ -105,6 +107,7 @@ public class ChatService {
             res.setSender("Hệ thống");
             res.setContent(systemMsg.getContent());
             res.setCreatedAt(systemMsg.getCreatedAt());
+            res.setConversationId(c.getId());
             return res;
         } else {
             // Gửi tin nhắn thông báo đã mở khóa
@@ -118,6 +121,7 @@ public class ChatService {
             res.setSender("Hệ thống");
             res.setContent(systemMsg.getContent());
             res.setCreatedAt(systemMsg.getCreatedAt());
+            res.setConversationId(c.getId());
             return res;
         }
     }

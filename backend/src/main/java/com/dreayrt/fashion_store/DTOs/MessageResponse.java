@@ -6,6 +6,7 @@ public class MessageResponse {
     private String sender;
     private String content;
     private LocalDateTime createdAt;
+    private Integer conversationId;
 
     public String getSender() {
         return sender;
@@ -29,6 +30,14 @@ public class MessageResponse {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Integer getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(Integer conversationId) {
+        this.conversationId = conversationId;
     }
 }
 

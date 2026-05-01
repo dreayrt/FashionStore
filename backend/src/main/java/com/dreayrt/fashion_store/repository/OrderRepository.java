@@ -25,4 +25,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     })
     @Override
     List<Order> findAll();
+
+    boolean existsByTaiKhoan_UsernameAndTrangThaiAndOrderDetail_SanPhamSize_SanPham_MaSanPham(String username, String trangThai, String maSanPham);
 }
