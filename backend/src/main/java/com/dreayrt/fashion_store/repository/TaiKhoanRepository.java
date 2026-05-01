@@ -16,6 +16,8 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, String> {
     Optional<TaiKhoan> findByEmail(String email);
     
     List<TaiKhoan> findByVaiTro(String vaiTro);
+    
+    long countByVaiTro(String vaiTro);
 
 
 }

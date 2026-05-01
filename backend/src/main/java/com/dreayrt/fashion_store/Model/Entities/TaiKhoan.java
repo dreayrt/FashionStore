@@ -1,6 +1,7 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.apache.catalina.User;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "TaiKhoan")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TaiKhoan {
     @Id
     @Column(name = "Username")

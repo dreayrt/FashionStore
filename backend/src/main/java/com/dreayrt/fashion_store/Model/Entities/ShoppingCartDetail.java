@@ -1,5 +1,6 @@
 package com.dreayrt.fashion_store.Model.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class ShoppingCartDetail {
     private Integer id;
     @Column(name = "SoLuong")
     private Integer soLuong;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="MaGioHang")
     private ShoppingCart shoppingCart;

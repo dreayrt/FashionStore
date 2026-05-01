@@ -16,8 +16,10 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderRepository orderRepository;
+    
     @Value("${app.r2.public-url}")
     private String r2PublicUrl;
+
     @GetMapping("/pages/order")
     public String Order(Model model, Authentication authentication) {
         String username = authentication.getName();
