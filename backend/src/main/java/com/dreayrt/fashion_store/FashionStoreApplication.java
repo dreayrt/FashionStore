@@ -3,10 +3,12 @@ package com.dreayrt.fashion_store;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication(exclude = {HttpEncodingAutoConfiguration.class})
+@EnableScheduling
 public class FashionStoreApplication extends SpringBootServletInitializer {
 
 	@Override

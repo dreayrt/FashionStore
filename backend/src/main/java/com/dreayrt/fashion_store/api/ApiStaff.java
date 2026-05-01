@@ -29,10 +29,19 @@ public class ApiStaff {
     }
 
     @PatchMapping("/order/{id}/ship")
-    public ResponseEntity<?> shipOrder(@PathVariable("id") Integer id){
+    public ResponseEntity<?> shipOrder(@PathVariable("id") Integer id, @RequestParam(value = "duration", required = false) Integer duration){
         Order order= orderRepository.findById(id).orElseThrow(()->new RuntimeException("Order not found"));
         order.setTrangThai("Đang Giao");
-        order.setNgayGiaoHang(new Date());
+        Date now = new Date();
+        order.setNgayGiaoHang(now);
+        
+        if (duration != null) {
+            order.setThoiGianGiaoDuKien(duration);
+            // Tính toán ngày hoàn thành dự kiến: now + duration (giây)
+            long completionTime = now.getTime() + (duration * 1000L);
+            order.setNgayHoanThanhDuKien(new Date(completionTime));
+        }
+        
         orderRepository.save(order);
         return ResponseEntity.ok("OK");
     }

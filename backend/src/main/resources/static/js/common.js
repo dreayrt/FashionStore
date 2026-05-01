@@ -69,4 +69,5 @@
         
         return originalSend.apply(this, arguments);
     };
+
 })();

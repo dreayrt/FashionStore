@@ -36,6 +36,12 @@ public class Order {
 
     @Column(name = "NgayGiaoHang")
     private Date ngayGiaoHang;
+
+    @Column(name = "ThoiGianGiaoDuKien")
+    private Integer thoiGianGiaoDuKien; // Đơn vị: giây
+
+    @Column(name = "NgayHoanThanhDuKien")
+    private Date ngayHoanThanhDuKien;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
@@ -123,6 +129,22 @@ public class Order {
 
     public void setNgayGiaoHang(Date ngayGiaoHang) {
         this.ngayGiaoHang = ngayGiaoHang;
+    }
+
+    public Integer getThoiGianGiaoDuKien() {
+        return thoiGianGiaoDuKien;
+    }
+
+    public void setThoiGianGiaoDuKien(Integer thoiGianGiaoDuKien) {
+        this.thoiGianGiaoDuKien = thoiGianGiaoDuKien;
+    }
+
+    public Date getNgayHoanThanhDuKien() {
+        return ngayHoanThanhDuKien;
+    }
+
+    public void setNgayHoanThanhDuKien(Date ngayHoanThanhDuKien) {
+        this.ngayHoanThanhDuKien = ngayHoanThanhDuKien;
     }
 
     public TaiKhoan getTaiKhoan() {
