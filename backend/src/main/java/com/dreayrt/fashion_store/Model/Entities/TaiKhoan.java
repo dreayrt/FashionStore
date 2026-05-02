@@ -4,12 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.apache.catalina.User;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
 @Entity
 @Table(name = "TaiKhoan")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@SQLDelete(sql = "UPDATE TaiKhoan SET TrangThai = 'DELETED' WHERE Username = ?")
+@Where(clause = "TrangThai <> 'DELETED'")
 public class TaiKhoan {
     @Id
     @Column(name = "Username")

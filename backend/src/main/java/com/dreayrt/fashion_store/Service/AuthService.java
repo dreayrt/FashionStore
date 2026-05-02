@@ -25,13 +25,13 @@ public class AuthService {
 
     @Transactional
     public void Register(RegisterRequest registerRequest, BindingResult bindingResult){
-        if(taiKhoanRepository.existsByUsername(registerRequest.getUsername())){
+        if(taiKhoanRepository.existsByUsernameIncludeDeleted(registerRequest.getUsername())){
            bindingResult.rejectValue("username","error.username","Tài Khoản Đã Tồn Tại");
         }
         if(!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())){
            bindingResult.rejectValue("confirmPassword","error.confirmPassword", "Mật Khẩu Không Khớp");
         }
-        if(taiKhoanRepository.existsByEmail(registerRequest.getEmail())){
+        if(taiKhoanRepository.existsByEmailIncludeDeleted(registerRequest.getEmail())){
             bindingResult.rejectValue("email", "error.email", "Email Đã Được Sử Dụng");
         }
         if(taiKhoanRepository.existsByPhone(registerRequest.getPhone())){

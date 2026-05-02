@@ -6,6 +6,7 @@ import com.dreayrt.fashion_store.repository.SanPhamRepository;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
 import com.dreayrt.fashion_store.repository.VisitLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,9 +14,13 @@ import org.springframework.data.domain.Sort;
 import com.dreayrt.fashion_store.Util.HashUtil;
 import com.dreayrt.fashion_store.Service.AuthService;
 import com.dreayrt.fashion_store.DTOs.RegisterRequest;
+import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import com.dreayrt.fashion_store.Model.Entities.SanPham;
+import java.util.Calendar;
+import java.util.Date;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -213,5 +218,75 @@ public class ApiAdmin {
             response.put("message", "Không tìm thấy tài khoản!");
         }
         return response;
+    }
+
+    @GetMapping("/reports/stats")
+    public Map<String, Object> getReportStats() {
+        Map<String, Object> response = new HashMap<>();
+        
+        Calendar cal = Calendar.getInstance();
+        Date now = cal.getTime();
+        
+        // Daily
+        cal.set(Calendar.HOUR_OF_DAY, 0); cal.set(Calendar.MINUTE, 0); cal.set(Calendar.SECOND, 0);
+        Date startDay = cal.getTime();
+        long ordersDay = orderRepository.countOrdersByDateRange(startDay, now);
+        
+        // Weekly
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        Date startWeek = cal.getTime();
+        long ordersWeek = orderRepository.countOrdersByDateRange(startWeek, now);
+        
+        // Monthly
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startMonth = cal.getTime();
+        long ordersMonth = orderRepository.countOrdersByDateRange(startMonth, now);
+        
+        response.put("ordersDay", ordersDay);
+        response.put("ordersWeek", ordersWeek);
+        response.put("ordersMonth", ordersMonth);
+        
+        return response;
+    }
+
+    @Value("${app.r2.public-url}")
+    private  String publicUrl;
+    @GetMapping("/reports/top-products")
+    public List<Map<String, Object>> getTopProducts(@RequestParam(defaultValue = "5") int limit, Model model) {
+        List<Object[]> results = orderRepository.findTopSellingProducts(PageRequest.of(0, limit));
+        List<Map<String, Object>> products = new ArrayList<>();
+        for (Object[] res : results) {
+            SanPham sp = (SanPham) res[0];
+            Long totalSold = (Long) res[1];
+            
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", sp.getMaSanPham());
+            item.put("tenSanPham", sp.getTenSanPham());
+            item.put("gia", sp.getGiaSanPham());
+            item.put("hinhAnh",publicUrl+ "/imageProduct/" +sp.getAnhChinh());
+            item.put("totalSold", totalSold);
+            products.add(item);
+        }
+        return products;
+    }
+
+    @GetMapping("/reports/revenue")
+    public List<Map<String, Object>> getRevenueData(@RequestParam(defaultValue = "30") int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, -days);
+        Date since = cal.getTime();
+        
+        // Update query to get COUNT as well
+        List<Object[]> results = orderRepository.findRevenueAndCountByDate(since);
+        List<Map<String, Object>> data = new ArrayList<>();
+        
+        for (Object[] res : results) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("date", res[0].toString());
+            item.put("revenue", res[1]);
+            item.put("orderCount", res[2]); // Added orderCount
+            data.add(item);
+        }
+        return data;
     }
 }

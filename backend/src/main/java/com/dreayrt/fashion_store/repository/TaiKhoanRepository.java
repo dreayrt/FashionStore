@@ -3,6 +3,8 @@ package com.dreayrt.fashion_store.repository;
 import com.dreayrt.fashion_store.Model.Entities.OtpLog;
 import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,12 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, String> {
     boolean existsByPhone(String phone);
     //neu loi (NPE) thi dung wrapper Optional
     Optional<TaiKhoan> findByEmail(String email);
+
+    @Query(value = "SELECT COUNT(*) > 0 FROM TaiKhoan WHERE Username = :username", nativeQuery = true)
+    boolean existsByUsernameIncludeDeleted(@Param("username") String username);
+
+    @Query(value = "SELECT COUNT(*) > 0 FROM TaiKhoan WHERE Email = :email", nativeQuery = true)
+    boolean existsByEmailIncludeDeleted(@Param("email") String email);
     
     List<TaiKhoan> findByVaiTro(String vaiTro);
     
