@@ -26,18 +26,14 @@ import java.util.Map;
 public class DashBoardController {
     @Autowired
     private OrderRepository orderRepository;
-    
+
     @Autowired
     private SanPhamRepository sanPhamRepository;
     
     @Autowired
     private SanPhamSizeRepository sanPhamSizeRepository;
     
-    @Autowired
-    private TaiKhoanRepository taiKhoanRepository;
 
-    @Autowired
-    private VisitLogRepository visitLogRepository;
 
     @GetMapping("/staff")
     public String staff(Model model) {
@@ -66,47 +62,5 @@ public class DashBoardController {
         return "dashboard/admin";
     }
 
-    @GetMapping("/api/stats")
-    @ResponseBody
-    public Map<String, Object> getStats() {
-        Map<String, Object> stats = new HashMap<>();
-        
-        long totalUsers = taiKhoanRepository.countByVaiTro("User");
-        if (totalUsers == 0) totalUsers = taiKhoanRepository.count(); // Fallback if no roles defined yet
-        
-        long totalProducts = sanPhamRepository.count();
-        
-        BigDecimal revenue = orderRepository.sumTotalRevenue();
-        if (revenue == null) revenue = BigDecimal.ZERO;
-        
-        long totalVisitors = visitLogRepository.count(); 
-        List<VisitLog> logs = visitLogRepository.findTop10ByOrderByAccessTimeDesc();
-        System.out.println("LOG ACCESS: "+logs);
-        System.out.println("LOG username ACCESS: "+logs.get(0).getUsername());
-        System.out.println("LOG accesstime ACCESS: "+logs.get(0).getAccessTime());
-        System.out.println("LOG place ACCESS: "+logs.get(0).getPlaceVisit());
 
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        List<Map<String, Object>> recentLogs = new ArrayList<>();
-        for (VisitLog log : logs) {
-            Map<String, Object> item = new HashMap<>();
-            String name = "Khách";
-            if (log.getUsername() != null){
-                name = log.getUsername();
-            }
-            item.put("username", name);
-            item.put("accessTime", sdf.format(log.getAccessTime()));
-            item.put("isMember", log.getUsername() != null);
-            item.put("place", log.getPlaceVisit());
-            recentLogs.add(item);
-        }
-        
-        stats.put("totalUsers", totalUsers);
-        stats.put("totalProducts", totalProducts);
-        stats.put("totalRevenue", revenue);
-        stats.put("totalVisitors", totalVisitors);
-        stats.put("recentLogs", recentLogs);
-        
-        return stats;
-    }
 }

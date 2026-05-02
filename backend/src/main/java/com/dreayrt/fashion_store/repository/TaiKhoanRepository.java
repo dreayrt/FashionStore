@@ -19,5 +19,5 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, String> {
     
     long countByVaiTro(String vaiTro);
 
-
+    org.springframework.data.domain.Page<TaiKhoan> findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(String username, String email, org.springframework.data.domain.Pageable pageable);
 }

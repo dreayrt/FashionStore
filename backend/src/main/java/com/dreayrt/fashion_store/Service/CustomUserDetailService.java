@@ -20,10 +20,14 @@ public class CustomUserDetailService implements UserDetailsService {
 
         System.out.println("USERNAME: " + taiKhoan.getUsername());
         System.out.println("DB PASSWORD: " + taiKhoan.getPassword());
+
+        //User user = new User("thuan", "123", authorities); khong dung builder()
+        //builder thi tuong minh hon
         return User.builder()
                 .username(taiKhoan.getUsername())
                 .password(taiKhoan.getPassword())
                 .authorities("ROLE_" + taiKhoan.getVaiTro())
+                .accountLocked("Locked".equals(taiKhoan.getTrangThai()))
                 .build();
     }
 }

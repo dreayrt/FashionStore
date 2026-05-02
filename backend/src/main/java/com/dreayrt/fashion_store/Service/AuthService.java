@@ -44,7 +44,7 @@ public class AuthService {
         TaiKhoan taiKhoan =new TaiKhoan();
         taiKhoan.setUsername(registerRequest.getUsername().trim());
         taiKhoan.setPassword(passwordHash);
-        taiKhoan.setTrangThai("Offline");
+        taiKhoan.setTrangThai("Hoạt động");
         taiKhoan.setEmail(registerRequest.getEmail().trim());
         taiKhoan.setDiaChi(registerRequest.getAddress());
         taiKhoan.setPhone(registerRequest.getPhone().trim());

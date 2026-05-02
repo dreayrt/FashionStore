@@ -5,12 +5,17 @@ import com.dreayrt.fashion_store.Model.Entities.TaiKhoan;
 import com.dreayrt.fashion_store.Util.JwtUtil;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,26 +35,37 @@ public class ApiAuthentication {
     private TaiKhoanRepository taiKhoanRepository;
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         System.out.println("Remember: " + request.getRemember());
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
+            );
+        } catch (LockedException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Tài khoản của bạn đã bị khóa!");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+        }
+        catch (BadCredentialsException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Sai tài khoản hoặc mật khẩu!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        }
         TaiKhoan user = taiKhoanRepository.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("Username not found"));
         String role = user.getVaiTro();
 
         String accessToken = jwtUtil.generateAccessToken(request.getUsername(), role);
-        Map<String, String> response = new HashMap<>();
-        response.put("accessToken", accessToken);
-        response.put("role", role);
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("accessToken", accessToken);
+        responseData.put("role", role);
         if (Boolean.TRUE.equals(request.getRemember())) {
             String refreshToken = jwtUtil.generateRefreshToken(request.getUsername());
-            response.put("refreshToken", refreshToken);
+            responseData.put("refreshToken", refreshToken);
         }
-        return response;
+        return ResponseEntity.ok(responseData);
     }
 
     @PostMapping("/refresh")
