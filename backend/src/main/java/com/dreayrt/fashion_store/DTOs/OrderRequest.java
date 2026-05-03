@@ -17,6 +17,7 @@ public class OrderRequest {
     @NotBlank()
     @Pattern(regexp = "COD|SEPAY|BANK", message = "Phương Thức Không Hợp Lệ")
     private String paymentMethod;
+    private String voucherCode;
 
     public String getRecipientName() {
         return recipientName;
@@ -48,5 +49,13 @@ public class OrderRequest {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getVoucherCode() {
+        return voucherCode;
+    }
+
+    public void setVoucherCode(String voucherCode) {
+        this.voucherCode = voucherCode;
     }
 }

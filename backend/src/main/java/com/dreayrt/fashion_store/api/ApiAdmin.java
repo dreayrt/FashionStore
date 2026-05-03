@@ -1,6 +1,9 @@
 package com.dreayrt.fashion_store.api;
 
+import com.dreayrt.fashion_store.DTOs.AdvertisementDTO;
+import jakarta.validation.Valid;
 import com.dreayrt.fashion_store.Model.Entities.VisitLog;
+import com.dreayrt.fashion_store.Service.AdvertisementService;
 import com.dreayrt.fashion_store.repository.OrderRepository;
 import com.dreayrt.fashion_store.repository.SanPhamRepository;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import com.dreayrt.fashion_store.Util.HashUtil;
 import com.dreayrt.fashion_store.Service.AuthService;
 import com.dreayrt.fashion_store.DTOs.RegisterRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -288,5 +292,14 @@ public class ApiAdmin {
             data.add(item);
         }
         return data;
+    }
+
+    @Autowired
+    private AdvertisementService advertisementService;
+
+    @PostMapping("/advertisement")
+    public ResponseEntity<?> createAds(@Valid @RequestBody AdvertisementDTO request){
+        advertisementService.createAdvertisement(request);
+        return ResponseEntity.ok("OK");
     }
 }

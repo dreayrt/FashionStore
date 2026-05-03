@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
 import com.dreayrt.fashion_store.repository.OrderRepository;
 
+import com.dreayrt.fashion_store.DTOs.OrderPreviewDTO;
+
 import java.util.Map;
 
 @RestController
@@ -30,6 +32,12 @@ public class ApiOrder {
     public Map<String, Object> createOrder(Authentication authentication, @RequestBody OrderRequest request){
         Order order = orderService.createOrder(authentication, request);
         return Map.of("orderId", order.getMaDonHang());
+    }
+
+    @PostMapping("/preview")
+    public OrderPreviewDTO previewOrder(Authentication authentication, @RequestBody Map<String, String> request) {
+        String voucherCode = request.get("voucherCode");
+        return orderService.previewOrder(authentication, voucherCode);
     }
 
     @PatchMapping("/{id}/complete")
