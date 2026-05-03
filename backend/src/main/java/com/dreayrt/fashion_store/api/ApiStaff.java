@@ -1,6 +1,7 @@
 package com.dreayrt.fashion_store.api;
 
 import com.dreayrt.fashion_store.Model.Entities.Order;
+import com.dreayrt.fashion_store.Service.OrderService;
 import com.dreayrt.fashion_store.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ import java.util.List;
 public class ApiStaff {
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderService orderService;
     @GetMapping("/loadData")
     public List<Order> loadData(){
         List<Order> orders = orderRepository.findAll();
@@ -47,9 +51,7 @@ public class ApiStaff {
     }
     @PatchMapping("/order/{id}/reject")
     public ResponseEntity<?> rejectOrder(@PathVariable("id") Integer id){
-        Order order= orderRepository.findById(id).orElseThrow(()->new RuntimeException("Order not found"));
-        order.setTrangThai("Hủy");
-        orderRepository.save(order);
+        orderService.cancelOrder(id);
         return ResponseEntity.ok("OK");
     }
 }

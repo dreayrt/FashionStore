@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.dreayrt.fashion_store.repository.TaiKhoanRepository;
 import com.dreayrt.fashion_store.repository.VisitLogRepository;
+import com.dreayrt.fashion_store.DTOs.AdvertisementDTO;
+import com.dreayrt.fashion_store.Service.AdvertisementService;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,6 +39,9 @@ public class DashBoardController {
     
     @Autowired
     private SanPhamSizeRepository sanPhamSizeRepository;
+
+    @Autowired
+    private AdvertisementService advertisementService;
     
 
 
@@ -58,8 +68,33 @@ public class DashBoardController {
     }
 
     @GetMapping("/admin")
-    public String admin() {
+    public String admin(Model model) {
+        if (!model.containsAttribute("adsRequest")) {
+            model.addAttribute("adsRequest", new AdvertisementDTO());
+        }
         return "dashboard/admin";
+    }
+
+    @PostMapping("/admin/save-ads")
+    public String saveAds(@Valid @ModelAttribute("adsRequest") AdvertisementDTO adsRequest,
+                          BindingResult result,
+                          RedirectAttributes redirectAttributes,
+                          Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("activeSection", "ads");
+            return "dashboard/admin";
+        }
+
+        try {
+            advertisementService.createAdvertisement(adsRequest);
+            redirectAttributes.addFlashAttribute("adsSuccess", true);
+        } catch (Exception e) {
+            model.addAttribute("adsError", "Có lỗi xảy ra: " + e.getMessage());
+            model.addAttribute("activeSection", "ads");
+            return "dashboard/admin";
+        }
+
+        return "redirect:/dashboard/admin?section=ads&success=true";
     }
 
 

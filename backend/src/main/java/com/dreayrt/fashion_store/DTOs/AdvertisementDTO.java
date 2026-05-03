@@ -1,5 +1,6 @@
 package com.dreayrt.fashion_store.DTOs;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import jakarta.validation.constraints.*;
@@ -24,6 +25,7 @@ public class AdvertisementDTO {
 
     @NotNull(message = "Ngày hết hạn không được để trống")
     @Future(message = "Ngày hết hạn phải ở tương lai")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime ngayHetHan;
 
     @NotNull(message = "Giá trị tối thiểu không được để trống")

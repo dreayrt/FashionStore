@@ -236,6 +236,28 @@ public class OrderService {
     }
 
     @Transactional
+    public void cancelOrder(Integer orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null && !"Hủy".equals(order.getTrangThai())) {
+            List<OrderDetail> details = orderDetailRepository.findByOrder(order);
+            
+            // Hoàn lại số lượng vào kho
+            for (OrderDetail detail : details) {
+                SanPhamSize spSize = detail.getSanPhamSize();
+                if (spSize != null && spSize.getKho() != null) {
+                    Kho kho = spSize.getKho();
+                    kho.setSoLuong(kho.getSoLuong() + detail.getSoLuong());
+                    kho.setNgayCapNhat(new Date());
+                    sanPhamSizeRepository.save(spSize);
+                }
+            }
+            
+            order.setTrangThai("Hủy");
+            orderRepository.save(order);
+        }
+    }
+
+    @Transactional
     public void completeSepayOrder(Integer orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order != null) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.http.ResponseEntity;
 import com.dreayrt.fashion_store.repository.OrderRepository;
 
@@ -21,7 +22,7 @@ import com.dreayrt.fashion_store.DTOs.OrderPreviewDTO;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/Order")
+@RequestMapping({"/api/order", "/api/Order"})
 public class ApiOrder {
     @Autowired
     private OrderService orderService;
@@ -48,13 +49,20 @@ public class ApiOrder {
         return ResponseEntity.ok("OK");
     }
 
-    @DeleteMapping("/{id}/cancel")
+    @RequestMapping(value = "/{id}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable("id") Integer id) {
+        System.out.println("===> Request Hủy đơn hàng ID: " + id);
         Order order = orderRepository.findById(id).orElse(null);
-        if (order != null && "Chờ Thanh Toán".equals(order.getTrangThai())) {
-            orderService.deleteOrderFully(id);
+        if (order != null) {
+            System.out.println("===> Trạng thái hiện tại: " + order.getTrangThai());
+            if ("Chờ Thanh Toán".equals(order.getTrangThai()) || "Chờ Xác Nhận".equals(order.getTrangThai())) {
+                orderService.cancelOrder(id);
+                return ResponseEntity.ok(Map.of("success", true));
+            } else {
+                return ResponseEntity.ok(Map.of("success", false, "message", "Đơn hàng không ở trạng thái có thể hủy"));
+            }
         }
-        return ResponseEntity.ok(Map.of("success", true));
+        return ResponseEntity.ok(Map.of("success", false, "message", "Không tìm thấy đơn hàng"));
     }
 
 }
